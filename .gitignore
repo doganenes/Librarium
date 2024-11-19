@@ -13,6 +13,7 @@ nupkg/
 
 # Visual Studio
 .vs/
+*.vsidx
 
 # Fleet
 .fleet/

@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|c:\\users\\casper\\desktop\\4th grade - fall\\software engineering\\project\\librarysite\\backend\\data\\entities\\borrow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|solutionrelative:data\\entities\\borrow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Migrations\\20241119203130_bookV1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20241119203130_bookV1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|c:\\users\\casper\\desktop\\4th grade - fall\\software engineering\\project\\librarysite\\backend\\data\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|solutionrelative:data\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|c:\\users\\casper\\desktop\\4th grade - fall\\software engineering\\project\\librarysite\\backend\\data\\entities\\userfavouritebook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|solutionrelative:data\\entities\\userfavouritebook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|c:\\users\\casper\\desktop\\4th grade - fall\\software engineering\\project\\librarysite\\backend\\data\\entities\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|solutionrelative:data\\entities\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|c:\\users\\casper\\desktop\\4th grade - fall\\software engineering\\project\\librarysite\\backend\\data\\context\\librarycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{827817E7-D73B-457A-8DB1-114449CB5E5E}|Backend.csproj|solutionrelative:data\\context\\librarycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Migrations\\20241119202748_bookV1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20241119202748_bookV1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +38,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 16,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Borrow.cs",
+              "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\Borrow.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\Borrow.cs",
+              "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\Borrow.cs",
+              "RelativeToolTip": "Data\\Entities\\Borrow.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-19T20:26:56.72Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -82,15 +119,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "20241119203130_bookV1.cs",
+              "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Migrations\\20241119203130_bookV1.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241119203130_bookV1.cs",
+              "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Migrations\\20241119203130_bookV1.cs",
+              "RelativeToolTip": "Migrations\\20241119203130_bookV1.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAAACsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-19T20:31:30.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "LibraryContext.cs",
               "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Context\\LibraryContext.cs",
               "RelativeDocumentMoniker": "Data\\Context\\LibraryContext.cs",
               "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Context\\LibraryContext.cs",
               "RelativeToolTip": "Data\\Context\\LibraryContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAgwCgAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-17T21:48:13.61Z",
+              "WhenOpened": "2024-11-19T20:30:00.066Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20241119202748_bookV1.cs",
+              "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Migrations\\20241119202748_bookV1.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241119202748_bookV1.cs",
+              "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Migrations\\20241119202748_bookV1.cs",
+              "RelativeToolTip": "Migrations\\20241119202748_bookV1.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAwCsAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-19T20:27:48.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserFavouriteBook.cs",
+              "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\UserFavouriteBook.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\UserFavouriteBook.cs",
+              "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\UserFavouriteBook.cs",
+              "RelativeToolTip": "Data\\Entities\\UserFavouriteBook.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-19T20:26:59.225Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\User.cs",
+              "RelativeToolTip": "Data\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-19T20:26:22.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Book.cs",
+              "DocumentMoniker": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\Book.cs",
+              "RelativeDocumentMoniker": "Data\\Entities\\Book.cs",
+              "ToolTip": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\LibrarySite\\Backend\\Data\\Entities\\Book.cs",
+              "RelativeToolTip": "Data\\Entities\\Book.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-19T20:26:20.745Z",
               "EditorCaption": ""
             }
           ]

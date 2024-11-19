@@ -1,16 +1,19 @@
-﻿namespace Backend.Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Backend.Data.Entities
 {
     public class Book
     {
-        public string BookID { get; set; }
-        public string BookName { get; set; }
-        public string BookTitle { get; set; }
-        public string BooksAuthor { get; set; }
-        public DateTime YearOfPublication { get; set; }
-        public string Publisher { get; set; }
-        public string ImageUrl { get; set; }
-        public bool Availability { get; set; }
-        public string BookShelf { get; set; }
-
+        [Key]
+        public string? ISBN { get; set; }
+        public string? BookTitle { get; set; }
+        public string? BookAuthor { get; set; }
+        public Int16? YearOfPublication { get; set; }
+        public string? Publisher { get; set; }
+        public string? ImageURL { get; set; }
+        public string? Availability { get; set; }
+        public string? BookShelf { get; set; }
+        public ICollection<Borrow> Borrows { get; set; }
+        public ICollection<UserFavouriteBook> FavouriteBooks { get; set; }
     }
 }

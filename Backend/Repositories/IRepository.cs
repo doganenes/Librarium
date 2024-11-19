@@ -1,4 +1,4 @@
-﻿namespace Backend.Repositories.Abstract
+﻿namespace Backend.Repositories
 {
     public interface IRepository
     {
