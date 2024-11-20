@@ -12,6 +12,8 @@ namespace Backend.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            // user->Borrow İlişkisi
             modelBuilder.Entity<Borrow>()
             .HasOne(b => b.User)
             .WithMany(u => u.BorrowBooks)
@@ -19,7 +21,7 @@ namespace Backend.Data.Context
 
             // Book -> Borrow İlişkisi
             modelBuilder.Entity<Borrow>()
-                .HasOne(b => b.)
+                .HasOne(b => b.Book)
                 .WithMany(bk => bk.Borrows)
                 .HasForeignKey(b => b.ISBN);
 
@@ -42,5 +44,6 @@ namespace Backend.Data.Context
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Borrow> Borrows { get; set; }
+        public DbSet<UserFavouriteBook> UserFavouriteBooks { get; set; }
     }
 }
