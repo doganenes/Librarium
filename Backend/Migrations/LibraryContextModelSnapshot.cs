@@ -61,12 +61,15 @@ namespace Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BorrowId"));
 
+                    b.Property<string>("BookISBN")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("BorrowDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ISBN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
@@ -76,11 +79,43 @@ namespace Backend.Migrations
 
                     b.HasKey("BorrowId");
 
-                    b.HasIndex("ISBN");
+                    b.HasIndex("BookISBN");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Borrows");
+                });
+
+            modelBuilder.Entity("Backend.Data.Entities.Review", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
+
+                    b.Property<string>("BookISBN")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReviewRate")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("BookISBN");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Backend.Data.Entities.User", b =>
@@ -92,7 +127,6 @@ namespace Backend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -100,19 +134,15 @@ namespace Backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -120,28 +150,26 @@ namespace Backend.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Backend.Data.Entities.UserFavouriteBook", b =>
+            modelBuilder.Entity("BookUser", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ISBN")
+                    b.Property<string>("FavouriteBooksISBN")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("UserId", "ISBN");
+                    b.Property<int>("UsersUserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ISBN");
+                    b.HasKey("FavouriteBooksISBN", "UsersUserId");
 
-                    b.ToTable("UserFavouriteBooks");
+                    b.HasIndex("UsersUserId");
+
+                    b.ToTable("BookUser");
                 });
 
             modelBuilder.Entity("Backend.Data.Entities.Borrow", b =>
                 {
                     b.HasOne("Backend.Data.Entities.Book", "Book")
                         .WithMany("Borrows")
-                        .HasForeignKey("ISBN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookISBN");
 
                     b.HasOne("Backend.Data.Entities.User", "User")
                         .WithMany("BorrowBooks")
@@ -154,37 +182,48 @@ namespace Backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Backend.Data.Entities.UserFavouriteBook", b =>
+            modelBuilder.Entity("Backend.Data.Entities.Review", b =>
                 {
                     b.HasOne("Backend.Data.Entities.Book", "Book")
-                        .WithMany("FavouriteBooks")
-                        .HasForeignKey("ISBN")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Review")
+                        .HasForeignKey("BookISBN");
 
                     b.HasOne("Backend.Data.Entities.User", "User")
-                        .WithMany("FavouriteBooks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Book");
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BookUser", b =>
+                {
+                    b.HasOne("Backend.Data.Entities.Book", null)
+                        .WithMany()
+                        .HasForeignKey("FavouriteBooksISBN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Backend.Data.Entities.Book", b =>
                 {
                     b.Navigation("Borrows");
 
-                    b.Navigation("FavouriteBooks");
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("Backend.Data.Entities.User", b =>
                 {
                     b.Navigation("BorrowBooks");
 
-                    b.Navigation("FavouriteBooks");
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

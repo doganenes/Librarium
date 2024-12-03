@@ -36,15 +36,39 @@ namespace Backend.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookUser",
+                columns: table => new
+                {
+                    FavouriteBooksISBN = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UsersUserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookUser", x => new { x.FavouriteBooksISBN, x.UsersUserId });
+                    table.ForeignKey(
+                        name: "FK_BookUser_Books_FavouriteBooksISBN",
+                        column: x => x.FavouriteBooksISBN,
+                        principalTable: "Books",
+                        principalColumn: "ISBN",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookUser_Users_UsersUserId",
+                        column: x => x.UsersUserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,7 +78,8 @@ namespace Backend.Migrations
                     BorrowId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BookISBN = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BorrowDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -62,11 +87,10 @@ namespace Backend.Migrations
                 {
                     table.PrimaryKey("PK_Borrows", x => x.BorrowId);
                     table.ForeignKey(
-                        name: "FK_Borrows_Books_ISBN",
-                        column: x => x.ISBN,
+                        name: "FK_Borrows_Books_BookISBN",
+                        column: x => x.BookISBN,
                         principalTable: "Books",
-                        principalColumn: "ISBN",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ISBN");
                     table.ForeignKey(
                         name: "FK_Borrows_Users_UserId",
                         column: x => x.UserId,
@@ -76,33 +100,41 @@ namespace Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserFavouriteBooks",
+                name: "Reviews",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ISBN = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ReviewId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReviewRate = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    BookISBN = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserFavouriteBooks", x => new { x.UserId, x.ISBN });
+                    table.PrimaryKey("PK_Reviews", x => x.ReviewId);
                     table.ForeignKey(
-                        name: "FK_UserFavouriteBooks_Books_ISBN",
-                        column: x => x.ISBN,
+                        name: "FK_Reviews_Books_BookISBN",
+                        column: x => x.BookISBN,
                         principalTable: "Books",
-                        principalColumn: "ISBN",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ISBN");
                     table.ForeignKey(
-                        name: "FK_UserFavouriteBooks_Users_UserId",
+                        name: "FK_Reviews_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrows_ISBN",
+                name: "IX_BookUser_UsersUserId",
+                table: "BookUser",
+                column: "UsersUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Borrows_BookISBN",
                 table: "Borrows",
-                column: "ISBN");
+                column: "BookISBN");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Borrows_UserId",
@@ -110,19 +142,27 @@ namespace Backend.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFavouriteBooks_ISBN",
-                table: "UserFavouriteBooks",
-                column: "ISBN");
+                name: "IX_Reviews_BookISBN",
+                table: "Reviews",
+                column: "BookISBN");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BookUser");
+
+            migrationBuilder.DropTable(
                 name: "Borrows");
 
             migrationBuilder.DropTable(
-                name: "UserFavouriteBooks");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Books");
