@@ -1,4 +1,7 @@
 ﻿using Backend.Data.Context;
+using Backend.Data.Entities;
+using Backend.Repositories.Abstract;
+using Backend.Repositories.Concrete;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +34,9 @@ builder.Services.AddControllers();
 // Connection string'i AddDbContext'e ilet
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
+
+builder.Services.AddScoped(typeof(IRepository<User>), typeof(Repository<User>));
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
