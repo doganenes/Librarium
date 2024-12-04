@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pc\\Desktop\\LibrarySite\\Backend\\Backend.csproj": {}
+    "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\new\\LibrarySite\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pc\\Desktop\\LibrarySite\\Backend\\Backend.csproj": {
+    "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\new\\LibrarySite\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pc\\Desktop\\LibrarySite\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\new\\LibrarySite\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\pc\\Desktop\\LibrarySite\\Backend\\Backend.csproj",
-        "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pc\\Desktop\\LibrarySite\\Backend\\obj\\",
+        "projectPath": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\new\\LibrarySite\\Backend\\Backend.csproj",
+        "packagesPath": "C:\\Users\\casper\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\casper\\Desktop\\4th Grade - Fall\\Software Engineering\\project\\new\\LibrarySite\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\casper\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.11, )"

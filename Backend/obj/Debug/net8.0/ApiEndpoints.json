@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "Backend.Controllers.AuthController",
+    "Method": "GetToken",
+    "RelativePath": "api/Auth/getToken",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Backend.Controllers.BookController",
     "Method": "GetAllBooks",
     "RelativePath": "api/Book/getAllBooks",
