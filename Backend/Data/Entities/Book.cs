@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Data.Entities
 {
@@ -14,7 +15,7 @@ namespace Backend.Data.Entities
         public string? Availability { get; set; }
         public string? BookShelf { get; set; }
         public ICollection<Borrow>? Borrows { get; set; }
-        public ICollection<User>? Users { get; set; }
-        public ICollection<Review>? Review { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
+        public  ICollection<User>? FavoritedBy { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace Backend.Data.Entities
         public string? Description { get; set; }
         public int ReviewRate { get; set; }
         public DateTime? CreatedDate { get; set; }
-        public User? User { get; set; }
         public Book? Book { get; set; }
-       
+        public String? ISBN { get; set; }
+
 
     }
 }
