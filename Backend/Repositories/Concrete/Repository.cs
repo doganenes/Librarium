@@ -22,9 +22,9 @@ namespace Backend.Repositories.Concrete
             _context.SaveChanges();
         }
 
-        public T GetById(int id)
+        public T GetByEmail(string email)
         {
-            return _dbSet.Find(id);
+            return _dbSet.Find(email);
         }
 
         public List<T> GetListAll()
