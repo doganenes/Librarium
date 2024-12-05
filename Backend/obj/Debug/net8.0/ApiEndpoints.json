@@ -10,19 +10,25 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Backend.Controllers.BookController",
-    "Method": "GetAllBooks",
-    "RelativePath": "api/Book/getAllBooks",
-    "HttpMethod": "GET",
+    "ContainingType": "Backend.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "loginDto",
+        "Type": "Backend.Dtos.LoginDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Backend.Controllers.UserController",
+    "ContainingType": "Backend.Controllers.AuthController",
     "Method": "Register",
-    "RelativePath": "api/User",
+    "RelativePath": "api/Auth/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -33,6 +39,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.BookController",
+    "Method": "GetAllBooks",
+    "RelativePath": "api/Book/getAllBooks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

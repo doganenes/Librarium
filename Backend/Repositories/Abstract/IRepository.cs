@@ -10,6 +10,7 @@ namespace Backend.Repositories.Abstract
         public void Insert(T t);
         public void Update(T t);
         public List<T> GetListAll(Expression<Func<T, bool>> filter);
+        public T GetByEmail(Expression<Func<T, bool>> condition);
 
     }
 }

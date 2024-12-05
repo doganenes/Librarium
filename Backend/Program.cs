@@ -11,6 +11,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IBookService, BookService>();
 
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -37,6 +38,9 @@ builder.Services.AddDbContext<LibraryContext>(options =>
 
 builder.Services.AddScoped(typeof(IRepository<User>), typeof(Repository<User>));
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<Token>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

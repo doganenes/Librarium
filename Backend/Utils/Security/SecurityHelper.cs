@@ -13,7 +13,7 @@
             }
         }
 
-        static bool VerifyPassword(string enteredPassword, string storedHashedPassword)
+        public static bool VerifyPassword(string enteredPassword, string storedHashedPassword)
         {
             string hashedPassword = HashPasswordWithHmacSha256(enteredPassword);
             return hashedPassword == storedHashedPassword;

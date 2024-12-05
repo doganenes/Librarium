@@ -48,6 +48,11 @@ namespace Backend.Repositories.Concrete
         {
             return _dbSet.Where(filter).ToList();
         }
+
+        public T GetByEmail(Expression<Func<T, bool>> condition)
+        {
+            return _dbSet.FirstOrDefault(condition);
+        }
     }
 
 }
