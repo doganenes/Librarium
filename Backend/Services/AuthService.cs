@@ -45,16 +45,25 @@ namespace Backend.Services
             // Veritabanında kullanıcıyı e-posta ile bul
             var user = _userRepository.GetByEmail(u => u.Email == loginDto.Email);
 
-            
-            // Şifre doğrulama
-            bool isPasswordValid = SecurityHelper.VerifyPassword(loginDto.Password, user.Password);
+            if (user == null)
 
-            if (user !=null &&!isPasswordValid)
             {
-                throw new Exception("Invalid password or email address.");
+                throw new Exception("email address invalid.");
+
             }
 
+            bool isPasswordValid = SecurityHelper.VerifyPassword(loginDto.Password, user.Password);
+
+            if (!isPasswordValid)
+            {
+                throw new Exception("password invalid.");
+
+            }
             return Utils.Jwt.TokenHandler.CreateToken(configuration);
+
+
+
+
         }
 
     }
