@@ -53,6 +53,11 @@ namespace Backend.Repositories.Concrete
         {
             return _dbSet.FirstOrDefault(condition);
         }
+
+        public T GetById(int id)
+        {
+            return _dbSet.Find(id);
+        }
     }
 
 }

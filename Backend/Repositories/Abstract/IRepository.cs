@@ -11,5 +11,7 @@ namespace Backend.Repositories.Abstract
         public List<T> GetListAll(Expression<Func<T, bool>> filter);
         public T GetByEmail(Expression<Func<T, bool>> condition);
 
+        public T GetById(int id);
+
     }
 }
