@@ -38,7 +38,7 @@ export default function BrowseBooks() {
   };
   */
 
-  const columns: GridColDef[] = useMemo(
+  const columns: GridColDef[] = useMemo<GridColDef[]>(
     () => [
       {
         field: "yearOfPublication",
@@ -87,6 +87,26 @@ export default function BrowseBooks() {
             {params.value === "1" ? "Available" : "Not Available"}
           </Typography>
         ),
+        filterOperators: [
+          {
+            label: "Available",
+            value: "available",
+            getApplyFilterFn: () => {
+              return (value) => {
+                return value === "1";
+              };
+            },
+          },
+          {
+            label: "Not Available",
+            value: "notAvailable",
+            getApplyFilterFn: () => {
+              return (value) => {
+                return value === "0";
+              };
+            },
+          },
+        ],
       },
       { field: "isbn", headerName: "ISBN", width: 150 },
       { field: "reviews", headerName: "Reviews", width: 150 },
