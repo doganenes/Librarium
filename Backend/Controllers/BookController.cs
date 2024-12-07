@@ -1,4 +1,6 @@
 ﻿using Backend.Data.Context;
+using Backend.Data.Entities;
+using Backend.Repositories.Abstract;
 using Backend.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +12,9 @@ namespace Backend.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly IBookService _bookService;
+        private readonly BookService _bookService;
 
-        public BookController(IBookService bookService)
+        public BookController(BookService bookService)
         {
             _bookService = bookService;
         }
@@ -21,8 +23,17 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetAllBooks()
         {
             var books = await _bookService.GetAllBooksAsync();
+            if (books == null)
+            {
+                return NotFound("No books found.");
+            }
             return Ok(books);
         }
+
+
+
+
+
     }
 
 }

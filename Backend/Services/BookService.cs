@@ -1,19 +1,18 @@
-﻿using Backend.Data.Context;
-using Backend.Data.Entities;
-using Backend.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Backend.Data.Entities;
+using Backend.Repositories.Abstract;
 
-public class BookService : IBookService
+public class BookService
 {
-    private readonly LibraryContext _libraryContext;
+    private readonly IRepository<Book> _bookRepository;
 
-    public BookService(LibraryContext libraryContext)
+    public BookService(IRepository<Book> bookRepository)
     {
-        _libraryContext = libraryContext;
+        _bookRepository = bookRepository;
     }
 
     public async Task<List<Book>> GetAllBooksAsync()
     {
-        return await _libraryContext.Books.ToListAsync();
+        var books = await _bookRepository.GetAllAsync();
+        return books ?? new List<Book>();
     }
 }

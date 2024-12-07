@@ -18,11 +18,7 @@ namespace Backend.Services
         }
 
         // Kullanıcıları listelemek
-        public List<User> GetAllUsers()
-        {
-            return _userRepository.GetListAll();
-        }
-
+       
         // ID ile kullanıcı bulmak
         public User GetUserById(int id)
         {

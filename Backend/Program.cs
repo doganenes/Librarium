@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IBookService, BookService>();
+
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
@@ -32,14 +32,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Connection string'i AddDbContext'e ilet
+
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Local")));
 
 builder.Services.AddScoped(typeof(IRepository<User>), typeof(Repository<User>));
+builder.Services.AddScoped(typeof(IRepository<Book>), typeof(Repository<Book>));
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<Token>();
+builder.Services.AddScoped<BookService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

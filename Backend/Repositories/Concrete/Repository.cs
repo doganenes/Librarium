@@ -1,4 +1,5 @@
 ﻿using Backend.Data.Context;
+using Backend.Data.Entities;
 using Backend.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -7,7 +8,7 @@ namespace Backend.Repositories.Concrete
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly LibraryContext _context; 
+        private readonly LibraryContext _context;
         private readonly DbSet<T> _dbSet;
 
         public Repository(LibraryContext context)
@@ -35,7 +36,7 @@ namespace Backend.Repositories.Concrete
         public void Insert(T t)
         {
             _dbSet.Add(t);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
         }
 
         public void Update(T t)
@@ -58,6 +59,12 @@ namespace Backend.Repositories.Concrete
         {
             return _dbSet.Find(id);
         }
+
+        public async Task<List<Book>> GetAllAsync()
+        {
+            return await _context.Set<Book>().ToListAsync();
+        }
+
     }
 
 }
