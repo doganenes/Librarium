@@ -17,15 +17,10 @@ namespace Backend.Services
             _userRepository = userRepository;
         }
 
-        // Kullanıcıları listelemek
-       
-        // ID ile kullanıcı bulmak
         public User GetUserById(int id)
         {
             return _userRepository.GetById(id);
         }
-
- 
 
         public void UpdateUser(User user)
         {

@@ -1,5 +1,6 @@
 ﻿using Backend.Data.Context;
 using Backend.Data.Entities;
+using Backend.Dtos;
 using Backend.Repositories.Abstract;
 using Backend.Services;
 using Microsoft.AspNetCore.Http;
@@ -22,11 +23,24 @@ namespace Backend.Controllers
         [HttpGet("getAllBooks")]
         public async Task<IActionResult> GetAllBooks()
         {
-            var books = await _bookService.GetAllBooksAsync();
+            var books = await _bookService.GetAllAsync();
             if (books == null)
             {
                 return NotFound("No books found.");
             }
+            return Ok(books);
+        }
+
+        [HttpPost("filter")]
+        public async Task<IActionResult> FilterBook([FromQuery] BookSearchRequest filter)
+        {
+            var books = await _bookService.SearchBooksAsync(filter);
+
+            if (books == null || !books.Any())
+            {
+                return NotFound("No books found matching the search criteria.");
+            }
+
             return Ok(books);
         }
 

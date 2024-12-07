@@ -2,8 +2,8 @@
 {
     public class BookSearchRequest
     {
-        string? ISBN;
-        string? author;
-        string? title;
+       public string? ISBN { get; set; }
+       public  string? author { get; set; }
+       public  string? title { get; set; }
     }
 }

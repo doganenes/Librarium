@@ -1,5 +1,9 @@
 ﻿using Backend.Data.Entities;
+using Backend.Dtos;
 using Backend.Repositories.Abstract;
+using Backend.Repositories.Concrete;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 public class BookService
 {
@@ -10,9 +14,36 @@ public class BookService
         _bookRepository = bookRepository;
     }
 
-    public async Task<List<Book>> GetAllBooksAsync()
+    public async Task<IQueryable<Book>> GetAllAsync()
     {
-        var books = await _bookRepository.GetAllAsync();
-        return books ?? new List<Book>();
+        return _bookRepository.GetAll();
     }
+
+    public async Task<List<Book>> SearchBooksAsync(BookSearchRequest filter)
+    {
+        IQueryable<Book> query = _bookRepository.GetAll(); 
+
+       
+        if (!string.IsNullOrEmpty(filter.ISBN))
+        {
+            query = query.Where(b => b.ISBN.ToLower().Contains(filter.ISBN.ToLower()));
+        }
+        if (!string.IsNullOrEmpty(filter.author))
+        {
+            query = query.Where(b => b.BookAuthor.ToLower().Contains(filter.author.ToLower()));
+        }
+        if (!string.IsNullOrEmpty(filter.title))
+        {
+            query = query.Where(b => b.BookTitle.ToLower().Contains(filter.title.ToLower()));
+        }
+
+       
+        return await query.ToListAsync();
+    }
+
+
+
+
+
+
 }

@@ -28,10 +28,7 @@ namespace Backend.Repositories.Concrete
             return _dbSet.Find(email);
         }
 
-        public List<T> GetListAll()
-        {
-            return _dbSet.ToList();
-        }
+     
 
         public void Insert(T t)
         {
@@ -45,9 +42,14 @@ namespace Backend.Repositories.Concrete
             _context.SaveChanges();
         }
 
-        public List<T> GetListAll(Expression<Func<T, bool>> filter)
+        public async Task<List<T>> GetListAllAsyncFilter(Expression<Func<T, bool>> predicate = null)
         {
-            return _dbSet.Where(filter).ToList();
+            if (predicate == null)
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
+
+            return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
         public T GetByEmail(Expression<Func<T, bool>> condition)
@@ -60,10 +62,13 @@ namespace Backend.Repositories.Concrete
             return _dbSet.Find(id);
         }
 
-        public async Task<List<Book>> GetAllAsync()
+        public IQueryable<T> GetAll()
         {
-            return await _context.Set<Book>().ToListAsync();
+            return _context.Set<T>().AsQueryable();
         }
+
+
+
 
     }
 
