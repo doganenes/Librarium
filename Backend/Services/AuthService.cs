@@ -48,7 +48,7 @@ namespace Backend.Services
             if (user == null)
 
             {
-                throw new Exception("email address invalid.");
+                throw new Exception("Email address or password is invalid.");
 
             }
 
@@ -56,7 +56,7 @@ namespace Backend.Services
 
             if (!isPasswordValid)
             {
-                throw new Exception("password invalid.");
+                throw new Exception("Email address or password is invalid.");
 
             }
             return Utils.Jwt.TokenHandler.CreateToken(configuration);
