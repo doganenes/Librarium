@@ -8,7 +8,7 @@ namespace Backend.Data.Entities
         public int BorrowId { get; set; }
         [Required]
         public User User { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public Book Book { get; set; }
         public string? ISBN { get; set; }

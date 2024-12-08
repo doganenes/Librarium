@@ -12,8 +12,9 @@ namespace Backend.Data.Entities
         public Int16? YearOfPublication { get; set; }
         public string? Publisher { get; set; }
         public string? ImageURL { get; set; }
-        public string? Availability { get; set; }
+        public bool? Availability { get; set; }
         public string? BookShelf { get; set; }
+        public decimal? AvgRating { get; set; }
         public ICollection<Borrow>? Borrows { get; set; }
         public ICollection<Review>? Reviews { get; set; }
         public  ICollection<User>? FavoritedBy { get; set; }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20241204122140_mig2")]
-    partial class mig2
+    [Migration("20241208153557_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,8 +30,11 @@ namespace Backend.Migrations
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Availability")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("Availability")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("AvgRating")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BookAuthor")
                         .HasColumnType("nvarchar(max)");
@@ -77,8 +80,9 @@ namespace Backend.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BorrowId");
 
@@ -112,8 +116,8 @@ namespace Backend.Migrations
                     b.Property<int>("ReviewRate")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ReviewId");
 
@@ -126,11 +130,8 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Data.Entities.User", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -157,8 +158,8 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("BookUser", b =>
                 {
-                    b.Property<int>("FavoritedByUserId")
-                        .HasColumnType("int");
+                    b.Property<string>("FavoritedByUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FavouriteBooksISBN")
                         .HasColumnType("nvarchar(450)");

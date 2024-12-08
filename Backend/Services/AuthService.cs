@@ -42,7 +42,6 @@ namespace Backend.Services
 
         public Token Login(LoginDto loginDto)
         {
-            // Veritabanında kullanıcıyı e-posta ile bul
             var user = _userRepository.GetByEmail(u => u.Email == loginDto.Email);
 
             if (user == null)

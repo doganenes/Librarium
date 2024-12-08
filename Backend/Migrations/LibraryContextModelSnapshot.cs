@@ -27,8 +27,11 @@ namespace Backend.Migrations
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Availability")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool?>("Availability")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("AvgRating")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("BookAuthor")
                         .HasColumnType("nvarchar(max)");
@@ -74,10 +77,7 @@ namespace Backend.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -85,7 +85,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("BookISBN");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Borrows");
                 });
@@ -178,7 +178,7 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Data.Entities.User", "User")
                         .WithMany("BorrowBooks")
-                        .HasForeignKey("UserId1")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

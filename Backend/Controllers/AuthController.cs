@@ -30,7 +30,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] UserDto dto)
+        public IActionResult Register([FromQuery] UserDto dto)
         {
             if (_authService.CheckEmailExists(dto.Email))
             {
@@ -50,7 +50,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto loginDto)
+        public IActionResult Login([FromQuery] LoginDto loginDto)
         {
             try
             {

@@ -67,9 +67,6 @@ namespace Backend.Repositories.Concrete
             return _context.Set<T>().AsQueryable();
         }
 
-
-
-
     }
 
 }
