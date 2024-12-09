@@ -39,7 +39,6 @@ builder.Services.AddScoped(typeof(IRepository<User>), typeof(Repository<User>));
 builder.Services.AddScoped(typeof(IRepository<Book>), typeof(Repository<Book>));
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<Token>();
 builder.Services.AddScoped<BookService>();
 
 

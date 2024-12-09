@@ -44,28 +44,28 @@ namespace Backend.Controllers
             }
         }
 
-            [HttpDelete("deleteFavouriteBook")]
-            public IActionResult RemoveFavouriteBook(string userId, string isbn)
+        [HttpDelete("removeFavoriteBook")]
+        public IActionResult RemoveFavoriteBook(string userId, string ISBN)
+        {
+            try
             {
-                try
-                {
-                    _userService.RemoveFavouriteBook(userId, isbn);
-                    return NoContent();
-                }
-                catch (KeyNotFoundException ex)
-                {
-                    return NotFound(new { message = ex.Message }); // 404 Not Found
-                }
-                catch (InvalidOperationException ex)
-                {
-                    return BadRequest(new { message = ex.Message }); // 400 Bad Request
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, new { message = "An unexpected error occurred", detail = ex.Message }); 
-                }
+                _userService.RemoveFavoriteBook(userId, ISBN);
+                return NoContent(); 
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
             }
         }
+    }
 
 
 

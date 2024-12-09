@@ -1,109 +1,81 @@
-﻿using Backend.Data.Entities;
-using Backend.Dtos;
+﻿using Backend.Data.Context;
+using Backend.Data.Entities;
 using Backend.Repositories.Abstract;
-using Backend.Repositories.Concrete;
 using Microsoft.EntityFrameworkCore;
-using Backend.Utils.Security;
+using System;
 using System.Linq;
-using System.Collections.ObjectModel;
 
 namespace Backend.Services
 {
     public class UserService
     {
-
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Book> _bookRepository;
+        private readonly LibraryContext _dbContext;
 
-        public UserService(IRepository<User> userRepository, IRepository<Book> bookRepository)
+        public UserService(IRepository<User> userRepository, IRepository<Book> bookRepository, LibraryContext dbContext)
         {
             _userRepository = userRepository;
             _bookRepository = bookRepository;
-        }
-
-        public User GetUserById(string userId)
-        {
-            return _userRepository.GetById(userId);
-        }
-
-        public void UpdateUser(User user)
-        {
-            _userRepository.Update(user);
-        }
-
-        public void DeleteUser(string userId)
-        {
-            var user = _userRepository.GetById(userId);
-            if (user != null)
-            {
-                _userRepository.Delete(user);
-            }
+            _dbContext = dbContext;
         }
 
         public void AddFavoriteBook(string userId, string ISBN)
         {
-            var user = _userRepository.GetById(userId);
-            var book = _bookRepository.GetById(ISBN);
+            var user = _dbContext.Users
+                .Include(u => u.FavouriteBooks)
+                .FirstOrDefault(u => u.UserId == userId);
 
-            if (user == null)
-            {
-                throw new KeyNotFoundException("User not found");
-            }
-
-            if (book == null)
-            {
-                throw new KeyNotFoundException("Book not found");
-            }
-
-            if (user.FavouriteBooks == null)
-            {
-                user.FavouriteBooks = new Collection<Book>();
-            }
-
-            if (book.FavoritedBy == null)
-            {
-                book.FavoritedBy = new Collection<User>();
-            }
-
-            if (!user.FavouriteBooks.Contains(book))
-            {
-                user.FavouriteBooks.Add(book);
-                book.FavoritedBy.Add(user);
-
-                _userRepository.Update(user);
-                _bookRepository.Update(book);
-            }
-            else
-            {
-                throw new InvalidOperationException("Book is already in favourites!");
-            }
-        }
-
-
-        public void RemoveFavouriteBook(string userId, string ISBN)
-        {
-            var user = _userRepository.GetById(userId);
-            var book = _bookRepository.GetById(ISBN);
-            Console.WriteLine(book);
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found.");
             }
 
-            if (user.FavouriteBooks == null || !user.FavouriteBooks.Any())
-            {
-                throw new InvalidOperationException("User has no favourite books.");
-            }
+            var book = _dbContext.Books.FirstOrDefault(b => b.ISBN == ISBN);
 
             if (book == null)
             {
-                throw new KeyNotFoundException("Book not found in user's favourites.");
+                throw new KeyNotFoundException("Book not found.");
+            }
+
+            if (!user.FavouriteBooks.Contains(book))
+            {
+                user.FavouriteBooks.Add(book);
+
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new InvalidOperationException("The book is already in the user's favorite list.");
+            }
+            {
+
+
+            }
+
+        }
+
+        public void RemoveFavoriteBook(string userId, string ISBN)
+        {
+            var user = _dbContext.Users
+                    .Include(u => u.FavouriteBooks)
+                    .FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found.");
+            }
+
+            var book = user.FavouriteBooks.FirstOrDefault(b => b.ISBN == ISBN);
+
+            if (book == null)
+            {
+                throw new InvalidOperationException("The book is not in the user's favorite list.");
             }
 
             user.FavouriteBooks.Remove(book);
+            _dbContext.SaveChanges();
 
-            _userRepository.Update(user);
         }
-
     }
 }
