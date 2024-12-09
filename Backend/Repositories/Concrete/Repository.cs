@@ -28,8 +28,6 @@ namespace Backend.Repositories.Concrete
             return _dbSet.Find(email);
         }
 
-     
-
         public void Insert(T t)
         {
             _dbSet.Add(t);
@@ -57,7 +55,7 @@ namespace Backend.Repositories.Concrete
             return _dbSet.FirstOrDefault(condition);
         }
 
-        public T GetById(int id)
+        public T GetById(string id)
         {
             return _dbSet.Find(id);
         }

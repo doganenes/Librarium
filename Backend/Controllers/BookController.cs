@@ -44,7 +44,6 @@ namespace Backend.Controllers
             return Ok(books);
         }
 
-
     }
 
 }

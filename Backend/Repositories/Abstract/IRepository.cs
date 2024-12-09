@@ -10,7 +10,7 @@ namespace Backend.Repositories.Abstract
         public void Update(T t);
         public Task<List<T>> GetListAllAsyncFilter(Expression<Func<T, bool>> predicate = null);
         public T GetByEmail(Expression<Func<T, bool>> condition);
-        public T GetById(int id);
+        public T GetById(string id);
     
         public IQueryable<T> GetAll();
 

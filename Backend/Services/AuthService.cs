@@ -15,7 +15,7 @@ namespace Backend.Services
         {
             _userRepository = userRepository;
             this.configuration = configuration;
-        }
+          }
 
 
         public User Register(UserDto userDto)
@@ -24,6 +24,7 @@ namespace Backend.Services
 
             User user = new User()
             {
+                UserId = Guid.NewGuid().ToString(),
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 Email = userDto.Email,
