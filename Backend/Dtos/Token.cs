@@ -1,4 +1,4 @@
-﻿namespace Backend.Data.Entities
+﻿namespace Backend.Dtos
 {
     public class Token
     {

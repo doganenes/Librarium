@@ -1,4 +1,4 @@
-﻿using Backend.Data.Entities;
+﻿using Backend.Dtos;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,18 +9,16 @@ namespace Backend.Utils.Jwt
 {
     public static class TokenHandler
     {
-        public static Token CreateToken(IConfiguration configuration, string UserId, string firstName)
+        public static Token CreateToken(IConfiguration configuration, string UserId)
         {
             Token token = new Token();
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:securityKey"]));
             SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             token.Expiration = DateTime.Now.AddMinutes(Convert.ToInt16(configuration["Token:Expiration"]));
 
-            // Adding claims to the JWT
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, UserId),
-                new Claim(ClaimTypes.GivenName, firstName)
                
             };
 

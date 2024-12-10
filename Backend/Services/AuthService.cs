@@ -63,12 +63,10 @@ namespace Backend.Services
                 throw new Exception("Email address or password is invalid.");
             }
 
-            // Create a token and return it
-            return Utils.Jwt.TokenHandler.CreateToken(_configuration, user.UserId, user.FirstName);
+            return Utils.Jwt.TokenHandler.CreateToken(_configuration, user.UserId);
         }
 
-
-        public  string GetUserIdFromToken(string token, IConfiguration configuration)
+        public string GetUserIdFromToken(string token, IConfiguration configuration)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(configuration["Token:securityKey"]);
@@ -78,21 +76,22 @@ namespace Backend.Services
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false, // Set to true in production and specify the issuer
-                    ValidateAudience = false, // Set to true in production and specify the audience
-                    ClockSkew = TimeSpan.Zero // No buffer time for expiration
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
                 return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value.ToString();
-                
+
             }
             catch (Exception ex)
             {
-                // Log error for debugging and troubleshooting
                 Console.WriteLine($"Token validation failed: {ex.Message}");
-                return null; // Token validation failed
+                return null;
             }
         }
+
+
 
     }
 

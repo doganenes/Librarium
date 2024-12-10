@@ -23,8 +23,6 @@ namespace Backend.Controllers
         }
 
 
-
-
         [HttpPost("register")]
         public IActionResult Register([FromQuery] UserDto dto)
         {
@@ -58,15 +56,16 @@ namespace Backend.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-        [HttpGet("getId")]
+        [HttpGet("getIdFromToken")]
         public IActionResult getInfo(string t)
         {
 
-            string userID = _authService.GetUserIdFromToken(t.ToString(), _configuration);
+            string userID = _authService.GetUserIdFromToken(t, _configuration);
 
-            return Ok(userID.ToString());
+            return Ok(new { User = userID, Message = "ID retrived from token" });
 
         }
+
 
     }
 }

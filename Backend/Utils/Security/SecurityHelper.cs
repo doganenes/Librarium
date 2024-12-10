@@ -4,7 +4,7 @@
     {
         public static string HashPasswordWithHmacSha256(string password)
         {
-            string key = "your-secure-key";
+            string key = "$2y$10$JNRfO6dum8.LC5yCJ4ACbuyruTg88IQcDlLeyzJQZP2xLpUTjmeQ.";
 
             using (var hmac = new System.Security.Cryptography.HMACSHA256(System.Text.Encoding.UTF8.GetBytes(key)))
             {
