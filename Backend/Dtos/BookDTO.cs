@@ -1,6 +1,6 @@
 ﻿namespace Backend.Dtos
 {
-    public class BookSearchRequest
+    public class BookDTO
     {
        public string? ISBN { get; set; }
        public  string? author { get; set; }

@@ -73,7 +73,7 @@ namespace Backend.Controllers
         {
             try
             {
-                List<BookSearchRequest> favoriteBooks = await _userService.GetUserFavoriteBooksAsync(userId);
+                List<BookDTO> favoriteBooks = await _userService.GetUserFavoriteBooksAsync(userId);
 
                 if (favoriteBooks == null || favoriteBooks.Count == 0)
                 {

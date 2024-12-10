@@ -19,7 +19,7 @@ public class BookService
         return _bookRepository.GetAll();
     }
 
-    public async Task<List<Book>> SearchBooksAsync(BookSearchRequest filter)
+    public async Task<List<Book>> SearchBooksAsync(BookDTO filter)
     {
         IQueryable<Book> query = _bookRepository.GetAll(); 
 

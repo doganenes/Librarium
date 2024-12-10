@@ -81,7 +81,7 @@ namespace Backend.Services
 
         }
 
-        public async Task<List<BookSearchRequest>> GetUserFavoriteBooksAsync(string userID)
+        public async Task<List<BookDTO>> GetUserFavoriteBooksAsync(string userID)
         {
             var user = await _dbContext.Users
                 .Include(u => u.FavouriteBooks)
@@ -92,7 +92,7 @@ namespace Backend.Services
                 return null; 
             }
 
-            var favoriteBooks = user.FavouriteBooks.Select(book => new BookSearchRequest
+            var favoriteBooks = user.FavouriteBooks.Select(book => new BookDTO
             {
                 ISBN = book.ISBN,
                 title = book.BookTitle,
