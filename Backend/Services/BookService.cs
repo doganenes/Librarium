@@ -19,7 +19,7 @@ public class BookService
         return _bookRepository.GetAll();
     }
 
-    public async Task<List<Book>> SearchBooksAsync(BookDTO filter)
+    public async Task<List<Book>> SearchBooksAsync(BookDto filter)
     {
         IQueryable<Book> query = _bookRepository.GetAll(); 
 
@@ -28,16 +28,15 @@ public class BookService
         {
             query = query.Where(b => b.ISBN.ToLower().Contains(filter.ISBN.ToLower()));
         }
-        if (!string.IsNullOrEmpty(filter.author))
+        if (!string.IsNullOrEmpty(filter.Author))
         {
-            query = query.Where(b => b.BookAuthor.ToLower().Contains(filter.author.ToLower()));
+            query = query.Where(b => b.BookAuthor.ToLower().Contains(filter.Author.ToLower()));
         }
-        if (!string.IsNullOrEmpty(filter.title))
+        if (!string.IsNullOrEmpty(filter.Title))
         {
-            query = query.Where(b => b.BookTitle.ToLower().Contains(filter.title.ToLower()));
+            query = query.Where(b => b.BookTitle.ToLower().Contains(filter.Title.ToLower()));
         }
 
-       
         return await query.ToListAsync();
     }
 

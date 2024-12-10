@@ -40,15 +40,6 @@ namespace Backend.Repositories.Concrete
             _context.SaveChanges();
         }
 
-        public async Task<List<T>> GetListAllAsyncFilter(Expression<Func<T, bool>> predicate = null)
-        {
-            if (predicate == null)
-            {
-                return await _context.Set<T>().ToListAsync();
-            }
-
-            return await _context.Set<T>().Where(predicate).ToListAsync();
-        }
 
         public T GetByEmail(Expression<Func<T, bool>> condition)
         {

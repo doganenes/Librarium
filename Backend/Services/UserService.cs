@@ -81,25 +81,26 @@ namespace Backend.Services
 
         }
 
-        public async Task<List<BookDTO>> GetUserFavoriteBooksAsync(string userID)
+        public async Task<List<BookDto>> GetUserFavoriteBooksAsync(string userID)
         {
+
             var user = await _dbContext.Users
                 .Include(u => u.FavouriteBooks)
                 .FirstOrDefaultAsync(u => u.UserId == userID);
 
             if (user == null)
             {
-                return null; 
+                throw new Exception("User Empty");
             }
 
-            var favoriteBooks = user.FavouriteBooks.Select(book => new BookDTO
+            var favoriteBooks = user.FavouriteBooks?.Select(book => new BookDto
             {
                 ISBN = book.ISBN,
-                title = book.BookTitle,
-                author = book.BookAuthor
+                Title = book.BookTitle,
+                Author = book.BookAuthor
             }).ToList();
 
-            return favoriteBooks; 
+            return favoriteBooks;
         }
 
 

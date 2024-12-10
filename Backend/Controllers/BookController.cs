@@ -32,7 +32,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("filter")]
-        public async Task<IActionResult> FilterBook([FromQuery] BookDTO filter)
+        public async Task<IActionResult> FilterBook([FromQuery] BookDto filter)
         {
             var books = await _bookService.SearchBooksAsync(filter);
 
