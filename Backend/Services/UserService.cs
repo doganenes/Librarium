@@ -1,6 +1,9 @@
 ﻿using Backend.Data.Context;
 using Backend.Data.Entities;
+using Backend.Dtos;
 using Backend.Repositories.Abstract;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -77,5 +80,31 @@ namespace Backend.Services
             _dbContext.SaveChanges();
 
         }
+
+        public async Task<List<BookSearchRequest>> GetUserFavoriteBooksAsync(string userID)
+        {
+            var user = await _dbContext.Users
+                .Include(u => u.FavouriteBooks)
+                .FirstOrDefaultAsync(u => u.UserId == userID);
+
+            if (user == null)
+            {
+                return null; 
+            }
+
+            var favoriteBooks = user.FavouriteBooks.Select(book => new BookSearchRequest
+            {
+                ISBN = book.ISBN,
+                title = book.BookTitle,
+                author = book.BookAuthor
+            }).ToList();
+
+            return favoriteBooks; 
+        }
+
+
+
+
+
     }
 }

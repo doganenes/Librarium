@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Backend.Data.Entities
 {
@@ -13,6 +14,7 @@ namespace Backend.Data.Entities
         public string? PhoneNumber { get; set; }
         public string? Role { get; set; }
         public ICollection<Borrow>? BorrowBooks { get; set; }
+        [JsonIgnore]
         public ICollection<Book>? FavouriteBooks { get; set; }
         public ICollection<Review>? Reviews { get; set; }
     }

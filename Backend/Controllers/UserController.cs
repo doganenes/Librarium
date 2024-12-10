@@ -1,7 +1,10 @@
-﻿using Backend.Dtos;
+﻿using Backend.Data.Entities;
+using Backend.Dtos;
 using Backend.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
+using System.Collections.Generic;
 
 namespace Backend.Controllers
 {
@@ -17,7 +20,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("addfavoritebooks")]
-        public IActionResult AddFavoriteBook([FromQuery]string userId, [FromQuery] string ISBN)
+        public IActionResult AddFavoriteBook([FromQuery] string userId, [FromQuery] string ISBN)
         {
             try
             {
@@ -29,7 +32,7 @@ namespace Backend.Controllers
                 _userService.AddFavoriteBook(userId, ISBN);
                 return Ok(new { Message = "Book added to favorites successfully" });
             }
-         
+
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { Message = ex.Message });
@@ -50,7 +53,7 @@ namespace Backend.Controllers
             try
             {
                 _userService.RemoveFavoriteBook(userId, ISBN);
-                return NoContent(); 
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
@@ -65,9 +68,29 @@ namespace Backend.Controllers
                 return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
             }
         }
+        [HttpGet("getFavoriteBookList")]
+        public async Task<IActionResult> GetUserFavoriteBookList(string userId)
+        {
+            try
+            {
+                List<BookSearchRequest> favoriteBooks = await _userService.GetUserFavoriteBooksAsync(userId);
+
+                if (favoriteBooks == null || favoriteBooks.Count == 0)
+                {
+                    return NoContent(); 
+                }
+
+                return Ok(favoriteBooks); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
     }
 
 
 
 
-    }
+}
