@@ -21,9 +21,10 @@ public class BookService
 
     public async Task<List<Book>> SearchBooksAsync(BookDto filter)
     {
-        IQueryable<Book> query = _bookRepository.GetAll(); 
+        IQueryable<Book> query = _bookRepository.GetAll()
+            .Include(i => i.FavoritedBy);
+           
 
-       
         if (!string.IsNullOrEmpty(filter.ISBN))
         {
             query = query.Where(b => b.ISBN.ToLower().Contains(filter.ISBN.ToLower()));
@@ -40,9 +41,5 @@ public class BookService
         return await query.ToListAsync();
     }
 
-
-
-
-
-
 }
+

@@ -23,18 +23,21 @@ namespace Backend.Services
             _dbContext = dbContext;
         }
 
-        public void AddFavoriteBook(string userId, string ISBN)
+        public  void AddFavoriteBook(string userId, string ISBN)
         {
-            var user = _dbContext.Users
+            var user =  _dbContext.Users
                 .Include(u => u.FavouriteBooks)
                 .FirstOrDefault(u => u.UserId == userId);
+
+            var book =  _dbContext.Books
+                .Include(b => b.FavoritedBy) 
+                .FirstOrDefault(b => b.ISBN == ISBN);
+
 
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found.");
             }
-
-            var book = _dbContext.Books.FirstOrDefault(b => b.ISBN == ISBN);
 
             if (book == null)
             {
@@ -43,20 +46,21 @@ namespace Backend.Services
 
             if (!user.FavouriteBooks.Contains(book))
             {
+                // Add book to user's favorite list
                 user.FavouriteBooks.Add(book);
 
+                // Add user to book's favoritedBy list
+                book.FavoritedBy.Add(user);
+                Console.WriteLine(book);
+                // Save changes to database
                 _dbContext.SaveChanges();
             }
             else
             {
                 throw new InvalidOperationException("The book is already in the user's favorite list.");
             }
-            {
-
-
-            }
-
         }
+
 
         public void RemoveFavoriteBook(string userId, string ISBN)
         {

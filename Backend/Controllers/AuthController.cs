@@ -4,6 +4,7 @@ using Backend.Services;
 using Backend.Utils.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Backend.Controllers
 {
@@ -22,12 +23,7 @@ namespace Backend.Controllers
         }
 
 
-        [HttpGet("getToken")]
-        public IActionResult GetToken()
-        {
-            Token token = TokenHandler.CreateToken(_configuration);
-            return Ok(token);
-        }
+
 
         [HttpPost("register")]
         public IActionResult Register([FromQuery] UserDto dto)
@@ -62,7 +58,15 @@ namespace Backend.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        [HttpGet("getId")]
+        public IActionResult getInfo(string t)
+        {
 
+            string userID = _authService.GetUserIdFromToken(t.ToString(), _configuration);
+
+            return Ok(userID.ToString());
+
+        }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Backend.Data.Entities
 {
@@ -18,6 +19,7 @@ namespace Backend.Data.Entities
         public decimal? AvgRating { get; set; }
         public ICollection<Borrow>? Borrows { get; set; }
         public ICollection<Review>? Reviews { get; set; }
+        
         public ICollection<User> FavoritedBy { get; set; } = new Collection<User>();
     }
 }
