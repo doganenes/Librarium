@@ -19,7 +19,7 @@ namespace Backend.Controllers
             _userService = userService;
         }
 
-        [HttpPost("addfavoritebooks")]
+        [HttpPost("addFavoriteBook")]
         public IActionResult AddFavoriteBook([FromQuery] string userId, [FromQuery] string ISBN)
         {
             try
