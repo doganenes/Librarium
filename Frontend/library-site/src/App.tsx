@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import { AnimatePresence, motion } from "framer-motion";
 import ThemeProvider from "./utils/ThemeProvider";
 import BrowseBooks from "./pages/BrowseBooks";
+import Book from "./pages/Book";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const App: React.FC = () => {
               element={pageWrapper(ForgotPassword)}
             />
             <Route path="/browsebooks" element={pageWrapper(BrowseBooks)} />
+            <Route path="/book" element={pageWrapper(Book)} />
           </Routes>
         </AnimatePresence>
       </ThemeProvider>

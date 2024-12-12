@@ -1,10 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import {
   DataGrid,
   GridRowsProp,
   GridColDef,
   GridToolbar,
 } from "@mui/x-data-grid";
-import { Modal, Typography } from "@mui/material";
+import { Modal, Typography, Rating, Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { getAllBooks } from "../api/bookApi";
 
@@ -13,6 +14,7 @@ const filteredRowsEmptyState = [{ emptyState: true, isbn: "0" }];
 */
 
 export default function BrowseBooks() {
+  const navigate = useNavigate();
   const [rows, setRows] = useState<GridRowsProp>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<any>(null);
@@ -80,11 +82,9 @@ export default function BrowseBooks() {
         renderCell: (params) => (
           <Typography
             variant="body1"
-            className={`${
-              params.value === "1" ? "text-green-500" : "text-red-500"
-            }`}
+            className={`${params.value ? "text-green-500" : "text-red-500"}`}
           >
-            {params.value === "1" ? "Available" : "Not Available"}
+            {params.value ? "Available" : "Not Available"}
           </Typography>
         ),
         filterOperators: [
@@ -93,7 +93,8 @@ export default function BrowseBooks() {
             value: "available",
             getApplyFilterFn: () => {
               return (value) => {
-                return value === "1";
+                console.log(value);
+                return value;
               };
             },
           },
@@ -102,16 +103,52 @@ export default function BrowseBooks() {
             value: "notAvailable",
             getApplyFilterFn: () => {
               return (value) => {
-                return value === "0";
+                return !value;
               };
             },
           },
         ],
       },
       { field: "isbn", headerName: "ISBN", width: 150 },
-      { field: "reviews", headerName: "Reviews", width: 150 },
+      {
+        field: "avgRating",
+        headerName: "Average Rating",
+        width: 200,
+        renderCell: (params) => (
+          <div
+            style={{ display: "flex", alignItems: "center", height: "100%" }}
+          >
+            <Rating
+              name="avg-rating"
+              value={params.value}
+              readOnly
+              precision={0.1}
+              max={5}
+            />
+            <Typography variant="body2" style={{ marginLeft: 8 }}>
+              {params.value.toFixed(1)} / 5
+            </Typography>
+          </div>
+        ),
+      },
+      {
+        field: "actions",
+        headerName: "Actions",
+        width: 150,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => (
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => navigate(`/book?isbn=${params.row.isbn}`)}
+          >
+            View Details
+          </Button>
+        ),
+      },
     ],
-    []
+    [navigate]
   );
 
   useEffect(() => {

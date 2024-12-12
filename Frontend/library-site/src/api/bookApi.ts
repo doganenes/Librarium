@@ -6,7 +6,14 @@ export interface LoginValues {
 }
 
 export const login = async (values: LoginValues) => {
-    return axiosInstance.post("/Auth/login", values).catch((error) => {
+    return axiosInstance.post("/Auth/login", {
+
+    },{
+        params:{
+            Email: values.email,
+            Password: values.password
+        }
+    }).catch((error) => {
         throw error;
     }
     );
@@ -21,7 +28,7 @@ export interface registerValues {
 }
 
 export const register = async (values: registerValues) => {
-    return axiosInstance.post("/Auth/register", values).catch((error) => {
+    return axiosInstance.post("/Auth/register",{},{params:values}).catch((error) => {
         throw error;
     }
     );
@@ -29,6 +36,18 @@ export const register = async (values: registerValues) => {
 
 export const getAllBooks = async () => {
     return axiosInstance.get("/Book/getAllBooks").catch((error) => {
+        throw error;
+    });
+}
+
+export const getBookByISBN = async (isbn: string) => {
+    return axiosInstance.post("/Book/bookSearch",{},{
+        params:{
+            ISBN: isbn
+        }
+    }).then((res) => {
+        return res.data.$values[0];
+    }).catch((error) => {
         throw error;
     });
 }
