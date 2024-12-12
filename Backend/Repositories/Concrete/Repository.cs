@@ -34,6 +34,13 @@ namespace Backend.Repositories.Concrete
             _context.SaveChanges();
         }
 
+        public void InsertMultiple(IEnumerable<T> entities)
+        {
+            _dbSet.AddRange(entities);
+            _context.SaveChanges();
+        }
+
+
         public void Update(T t)
         {
             _dbSet.Update(t);
@@ -54,6 +61,16 @@ namespace Backend.Repositories.Concrete
         public IQueryable<T> GetAll()
         {
             return _context.Set<T>().AsQueryable();
+        }
+
+        public T GetByCondition(Expression<Func<T, bool>> condition)
+        {
+            return _dbSet.FirstOrDefault(condition);
+        }
+
+        public List<T> GetAllByCondition(Expression<Func<T, bool>> condition)
+        {
+            return _dbSet.Where(condition).ToList();
         }
 
     }

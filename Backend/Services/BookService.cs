@@ -25,9 +25,9 @@ public class BookService
             .Include(i => i.FavoritedBy);
            
 
-        if (!string.IsNullOrEmpty(filter.ISBN))
+        if (!string.IsNullOrEmpty(filter.BookISBN))
         {
-            query = query.Where(b => b.ISBN.ToLower().Contains(filter.ISBN.ToLower()));
+            query = query.Where(b => b.ISBN.ToLower().Contains(filter.BookISBN.ToLower()));
         }
         if (!string.IsNullOrEmpty(filter.Author))
         {

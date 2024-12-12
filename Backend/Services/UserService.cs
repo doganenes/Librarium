@@ -99,7 +99,7 @@ namespace Backend.Services
 
             var favoriteBooks = user.FavouriteBooks?.Select(book => new BookDto
             {
-                ISBN = book.ISBN,
+                BookISBN = book.ISBN,
                 Title = book.BookTitle,
                 Author = book.BookAuthor
             }).ToList();

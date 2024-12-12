@@ -17,9 +17,7 @@ namespace Backend.Data.Entities
         public bool? Availability { get; set; }
         public string? BookShelf { get; set; }
         public decimal? AvgRating { get; set; }
-        public ICollection<Borrow>? Borrows { get; set; }
         public ICollection<Review>? Reviews { get; set; }
-        
         public ICollection<User> FavoritedBy { get; set; } = new Collection<User>();
     }
 }

@@ -11,7 +11,7 @@ namespace Backend.Data.Entities
         public string UserId { get; set; }
         [Required]
         public Book Book { get; set; }
-        public string? ISBN { get; set; }
+        public string? BookISBN { get; set; }
         public DateTime BorrowDate { get; set; }
         public DateTime ReturnDate { get; set; }
     }
