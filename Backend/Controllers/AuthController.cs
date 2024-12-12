@@ -66,6 +66,23 @@ namespace Backend.Controllers
 
         }
 
+        [HttpGet("getUserFromToken")]
+        public IActionResult getUserFromToken([FromHeader(Name = "Authorization")] string jwt)
+        {
+            if (jwt == null)
+            {
+                return BadRequest("Missing token");
+            }
+            string token = jwt.Split(" ")[1];
+            var user = _authService.getUserFromToken(token, _configuration);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            user.Password = null;
+            return Ok(user);
+        }
+
 
     }
 }

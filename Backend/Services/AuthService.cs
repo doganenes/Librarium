@@ -91,11 +91,18 @@ namespace Backend.Services
             }
         }
 
+        public User getUserFromToken(string token, IConfiguration configuration)
+        {
+            var userID = GetUserIdFromToken(token, configuration);
+            if (userID == null)
+            {
+                return null;
+            }
+            var user = _userRepository.GetById(userID);
+            return user;
+        }
 
 
     }
-
-
-
 }
 
