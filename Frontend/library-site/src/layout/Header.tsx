@@ -6,13 +6,15 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Button, IconButton, Drawer } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import DynamicIcon from "../components/DynamicIcon";
-import { useDarkMode } from "../utils/ThemeProvider";
+import { useDarkMode } from "../context/ThemeContext";
 import NavButton from "../components/NavButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { UserContext } from "../context/UserContext";
 
 const Header: React.FC = () => {
   const [darkMode, setDarkMode] = useDarkMode();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user } = React.useContext(UserContext);
 
   // Toggle Drawer
   const toggleDrawer = (open: boolean) => () => {
@@ -51,13 +53,29 @@ const Header: React.FC = () => {
 
           {/* Right Section (Desktop View) */}
           <div className="items-center space-x-4 hidden md:flex">
-            <NavButton id="login" color="inherit" variant="text" />
-            <NavButton
-              id="signup"
-              color="inherit"
-              variant="outlined"
-              className="border-white text-white hover:bg-white hover:text-blue-500"
-            />
+            {user ? (
+              <>
+                <Typography variant="h6" className="text-white">
+                  Hello, {user.firstName} {user.lastName}
+                </Typography>
+                <NavButton
+                  id="logout"
+                  color="inherit"
+                  variant="outlined"
+                  className="border-white text-white hover:bg-white hover:text-blue-500"
+                />
+              </>
+            ) : (
+              <>
+                <NavButton id="login" color="inherit" variant="text" />
+                <NavButton
+                  id="signup"
+                  color="inherit"
+                  variant="outlined"
+                  className="border-white text-white hover:bg-white hover:text-blue-500"
+                />
+              </>
+            )}
             <NavButton id="browseBooks" />
           </div>
 
@@ -73,13 +91,29 @@ const Header: React.FC = () => {
       {/* Drawer for Mobile Navigation */}
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         <div className="flex flex-col p-4 space-y-4">
-          <NavButton id="login" color="inherit" variant="text" />
-          <NavButton
-            id="signup"
-            color="inherit"
-            variant="outlined"
-            className="border-white text-white hover:bg-white hover:text-blue-500"
-          />
+          {user ? (
+            <>
+              <Typography variant="h6">
+                Hello, {user.firstName} {user.lastName}
+              </Typography>
+              <NavButton
+                id="logout"
+                color="inherit"
+                variant="outlined"
+                className="border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+              />
+            </>
+          ) : (
+            <>
+              <NavButton id="login" color="inherit" variant="text" />
+              <NavButton
+                id="signup"
+                color="inherit"
+                variant="outlined"
+                className="border-white text-white hover:bg-white hover:text-blue-500"
+              />
+            </>
+          )}
           <NavButton id="browseBooks" />
           <Button
             variant="outlined"

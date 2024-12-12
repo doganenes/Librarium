@@ -1,8 +1,11 @@
 import { Typography } from "@mui/material";
 import DynamicIcon from "../components/DynamicIcon";
 import NavButton from "../components/NavButton";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
 
 const Hero = () => {
+  const { user } = useContext(UserContext);
   return (
     <div
       className="relative h-full w-full flex items-center justify-center bg-cover bg-center"
@@ -27,19 +30,23 @@ const Hero = () => {
         </Typography>
         <div>
           <NavButton id="browseBooks" size="large" className="!mb-5" />
-          <br />
-          <NavButton
-            id="login"
-            size="large"
-            className="!mr-6 !text-white"
-            variant="text"
-          />
-          <NavButton
-            variant="outlined"
-            id="signup"
-            size="large"
-            className="!text-white !border-white"
-          />
+          {!user && (
+            <>
+              <br />
+              <NavButton
+                id="login"
+                size="large"
+                className="!mr-6 !text-white"
+                variant="text"
+              />
+              <NavButton
+                variant="outlined"
+                id="signup"
+                size="large"
+                className="!text-white !border-white"
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

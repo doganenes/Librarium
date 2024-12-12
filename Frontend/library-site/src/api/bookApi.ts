@@ -7,7 +7,6 @@ export interface LoginValues {
 
 export const login = async (values: LoginValues) => {
     return axiosInstance.post("/Auth/login", {
-
     },{
         params:{
             Email: values.email,
@@ -48,6 +47,12 @@ export const getBookByISBN = async (isbn: string) => {
     }).then((res) => {
         return res.data.$values[0];
     }).catch((error) => {
+        throw error;
+    });
+}
+
+export const getUserFromToken = async () => {
+    return axiosInstance.get("/Auth/getUserFromToken").catch((error) => {
         throw error;
     });
 }

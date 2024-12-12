@@ -21,6 +21,12 @@ const navConfig = [
     icon: "Signup",
     to: "/signup",
   },
+  {
+    id: "logout",
+    label: "Log Out",
+    icon: "Logout",
+    to: "/logout",
+  },
 ];
 
 type NavButtonProps = {

@@ -5,7 +5,14 @@ import {
   GridColDef,
   GridToolbar,
 } from "@mui/x-data-grid";
-import { Modal, Typography, Rating, Button } from "@mui/material";
+import {
+  Modal,
+  Typography,
+  Rating,
+  Button,
+  Backdrop,
+  Fade,
+} from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { getAllBooks } from "../api/bookApi";
 
@@ -93,7 +100,6 @@ export default function BrowseBooks() {
             value: "available",
             getApplyFilterFn: () => {
               return (value) => {
-                console.log(value);
                 return value;
               };
             },
@@ -163,12 +169,21 @@ export default function BrowseBooks() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         className="flex justify-center items-center h-full w-full"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
       >
-        <img
-          src={selectedBook?.imageURL}
-          alt="Book Cover"
-          className="min-h-50%"
-        />
+        <Fade in={modalOpen} timeout={300}>
+          <img
+            src={selectedBook?.imageURL}
+            alt="Book Cover"
+            className="min-h-50% transform transition-transform  "
+          />
+        </Fade>
       </Modal>
       <div className="flex gap-10 flex-col mt-20">
         <Typography variant="h4" className="text-center mt-8">

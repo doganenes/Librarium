@@ -25,12 +25,14 @@ import {
 } from "@mui/icons-material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { UserContext } from "../context/UserContext";
 
 const Book: React.FC = () => {
   const [searchParams] = useSearchParams();
   const isbn = searchParams.get("isbn");
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const { user } = React.useContext(UserContext);
 
   useEffect(() => {
     if (isbn) {
@@ -72,7 +74,18 @@ const Book: React.FC = () => {
   });
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: "100vh" }}
+        gap={2}
+      >
+        Loading...
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (!book) {
@@ -163,68 +176,70 @@ const Book: React.FC = () => {
               </Box>
             </CardContent>
           </Card>
-          <Grid size={{ xs: 12 }}>
-            <Box sx={{ mt: 4 }}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" align="center">
-                    Add a Review
-                  </Typography>
-                  <form
-                    onSubmit={formik.handleSubmit}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 10,
-                    }}
-                  >
-                    <TextField
-                      label="Your Review"
-                      name="newReview"
-                      value={formik.values.newReview}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      fullWidth
-                      multiline
-                      rows={4}
-                      sx={{ mt: 2 }}
-                      error={
-                        formik.touched.newReview &&
-                        Boolean(formik.errors.newReview)
-                      }
-                      helperText={
-                        formik.touched.newReview && formik.errors.newReview
-                      }
-                    />
-                    <Rating
-                      name="newReviewRating"
-                      value={formik.values.newReviewRating}
-                      onChange={(e, value) =>
-                        formik.setFieldValue("newReviewRating", value)
-                      }
-                      onBlur={formik.handleBlur}
-                      sx={{ mt: 2 }}
-                    />
-                    {formik.touched.newReviewRating &&
-                      formik.errors.newReviewRating && (
-                        <Typography color="error" variant="body2">
-                          {formik.errors.newReviewRating}
-                        </Typography>
-                      )}
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      fullWidth
-                      sx={{ mt: 2 }}
+          {user && (
+            <Grid size={{ xs: 12 }}>
+              <Box sx={{ mt: 4 }}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" align="center">
+                      Add a Review
+                    </Typography>
+                    <form
+                      onSubmit={formik.handleSubmit}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 10,
+                      }}
                     >
-                      Submit
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </Box>
-          </Grid>
+                      <TextField
+                        label="Your Review"
+                        name="newReview"
+                        value={formik.values.newReview}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        fullWidth
+                        multiline
+                        rows={4}
+                        sx={{ mt: 2 }}
+                        error={
+                          formik.touched.newReview &&
+                          Boolean(formik.errors.newReview)
+                        }
+                        helperText={
+                          formik.touched.newReview && formik.errors.newReview
+                        }
+                      />
+                      <Rating
+                        name="newReviewRating"
+                        value={formik.values.newReviewRating}
+                        onChange={(e, value) =>
+                          formik.setFieldValue("newReviewRating", value)
+                        }
+                        onBlur={formik.handleBlur}
+                        sx={{ mt: 2 }}
+                      />
+                      {formik.touched.newReviewRating &&
+                        formik.errors.newReviewRating && (
+                          <Typography color="error" variant="body2">
+                            {formik.errors.newReviewRating}
+                          </Typography>
+                        )}
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                      >
+                        Submit
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </Box>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       {book.reviews && book.reviews.length > 0 ? (

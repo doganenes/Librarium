@@ -6,30 +6,35 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
 import { AnimatePresence, motion } from "framer-motion";
-import ThemeProvider from "./utils/ThemeProvider";
+import ThemeProvider from "./context/ThemeContext";
 import BrowseBooks from "./pages/BrowseBooks";
 import Book from "./pages/Book";
+import { UserProvider } from "./context/UserContext";
+import Logout from "./pages/Logout";
 
 const App: React.FC = () => {
   const location = useLocation();
   return (
     <>
-      <ThemeProvider>
-        <Header />
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.key}>
-            <Route index path="/" element={pageWrapper(Homepage)} />
-            <Route path="/signup" element={pageWrapper(Signup)} />
-            <Route path="/login" element={pageWrapper(Login)} />
-            <Route
-              path="/forgotpassword"
-              element={pageWrapper(ForgotPassword)}
-            />
-            <Route path="/browsebooks" element={pageWrapper(BrowseBooks)} />
-            <Route path="/book" element={pageWrapper(Book)} />
-          </Routes>
-        </AnimatePresence>
-      </ThemeProvider>
+      <UserProvider>
+        <ThemeProvider>
+          <Header />
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.key}>
+              <Route index path="/" element={pageWrapper(Homepage)} />
+              <Route path="/signup" element={pageWrapper(Signup)} />
+              <Route path="/login" element={pageWrapper(Login)} />
+              <Route
+                path="/forgotpassword"
+                element={pageWrapper(ForgotPassword)}
+              />
+              <Route path="/browsebooks" element={pageWrapper(BrowseBooks)} />
+              <Route path="/book" element={pageWrapper(Book)} />
+              <Route path="/logout" element={pageWrapper(Logout)} />
+            </Routes>
+          </AnimatePresence>
+        </ThemeProvider>
+      </UserProvider>
     </>
   );
 };
