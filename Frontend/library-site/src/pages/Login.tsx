@@ -45,11 +45,6 @@ const Login: React.FC = () => {
           localStorage.setItem("token", accessToken);
           localStorage.setItem("refreshToken", refreshToken);
 
-          // Set Authorization header for Axios
-          axiosInstance.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
-
           console.log("Login successful, tokens stored.");
 
           getUserFromToken().then((response) => {
