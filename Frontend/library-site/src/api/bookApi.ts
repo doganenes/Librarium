@@ -42,7 +42,7 @@ export const getAllBooks = async () => {
 export const getBookByISBN = async (isbn: string) => {
     return axiosInstance.post("/Book/bookSearch",{},{
         params:{
-            ISBN: isbn
+            BookISBN: isbn
         }
     }).then((res) => {
         return res.data.$values[0];
