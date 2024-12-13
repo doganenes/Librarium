@@ -210,6 +210,7 @@ export default function BrowseBooks() {
             pageSizeOptions={[5, 10, 20]}
             initialState={{
               pagination: { paginationModel: { pageSize: 5 } },
+              sorting: { sortModel: [{ field: "avgRating", sort: "desc" }] },
             }}
             slots={{
               toolbar: GridToolbar,
