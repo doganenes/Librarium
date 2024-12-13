@@ -27,10 +27,8 @@ public class BorrowService
 
         if (book == null)
             throw new KeyNotFoundException("Book not found.");
-        var activeBorrow = await _dbContext.Borrows
-            .FirstOrDefaultAsync(b => b.BookISBN == ISBN && b.ReturnDate > DateTime.Now);
 
-        if (activeBorrow != null)
+        if (book.Availability == false)
             throw new InvalidOperationException("This book is already borrowed by another user.");
 
         var borrowLimitDate = DateTime.Now.AddDays(14);
@@ -47,34 +45,43 @@ public class BorrowService
             ReturnDate = DateTime.Now.AddDays(14)
         };
 
+        book.Availability = false;
+
         await _dbContext.Borrows.AddAsync(borrow);
+        _dbContext.Books.Update(book);
         await _dbContext.SaveChangesAsync();
     }
 
+
     public async Task ReturnBookAsync(string userId, string ISBN)
     {
-        var borrowLimitDate = DateTime.Now.AddDays(14);
-
         var borrow = await _dbContext.Borrows
-            .FirstOrDefaultAsync(b => b.UserId == userId && b.BookISBN == ISBN && b.ReturnDate == null);
+            .FirstOrDefaultAsync(b => b.UserId == userId && b.BookISBN == ISBN);
 
         if (borrow == null)
             throw new InvalidOperationException("The book is not currently borrowed by the user.");
 
+        var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == ISBN);
+        if (book == null)
+            throw new KeyNotFoundException("Book not found.");
+
+        book.Availability = true;
+
         borrow.ReturnDate = DateTime.Now;
 
         _dbContext.Borrows.Update(borrow);
+        _dbContext.Books.Update(book);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<List<string>> CheckOverdueBooksAsync()
+    public async Task<List<Book>> CheckOverdueBooksAsync()
     {
-        var borrowLimitDate = DateTime.Now.AddDays(14);
         var overdueBooks = await _dbContext.Borrows
-            .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, DateTime.Now) > 14 && b.ReturnDate == borrowLimitDate)
-            .Select(b => b.BookISBN)
+            .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, DateTime.Now) > 14)
+            .Select(b => b.Book)
             .ToListAsync();
 
         return overdueBooks;
     }
+
 }
