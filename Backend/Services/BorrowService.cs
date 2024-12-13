@@ -74,14 +74,13 @@ public class BorrowService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Book>> CheckOverdueBooksAsync()
+    public async Task<List<(Book Book, User User)>> CheckOverdueBooksWithUsersAsync()
     {
-        var overdueBooks = await _dbContext.Borrows
+        var overdueBooksWithUsers = await _dbContext.Borrows
             .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, DateTime.Now) > 14)
-            .Select(b => b.Book)
+            .Select(b => new { b.Book, b.User })
             .ToListAsync();
 
-        return overdueBooks;
+        return overdueBooksWithUsers.Select(o => (o.Book, o.User)).ToList();
     }
-
 }
