@@ -54,7 +54,7 @@ namespace Backend.Controllers
         [HttpGet("overdueBooks")]
         public async Task<IActionResult> GetOverdueBooks()
         {
-            var overdueBooks = await _borrowService.CheckOverdueBooksWithUsersAsync();
+            var overdueBooks = await _borrowService.CheckOverdueBooksAsync();
             return Ok(overdueBooks);
         }
     }
