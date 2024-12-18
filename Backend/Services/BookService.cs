@@ -22,7 +22,7 @@ public class BookService
     public async Task<List<Book>> SearchBooksAsync(BookDto filter)
     {
         IQueryable<Book> query = _bookRepository.GetAll()
-            .Include(i => i.FavoritedBy);
+            .Include(i => i.FavoritedBy).ThenInclude(i => i.BorrowBooks);
            
 
         if (!string.IsNullOrEmpty(filter.BookISBN))
