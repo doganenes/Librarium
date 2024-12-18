@@ -51,7 +51,7 @@ namespace Backend.Services
 
                 // Add user to book's favoritedBy list
                 book.FavoritedBy.Add(user);
-                Console.WriteLine(book);
+
                 // Save changes to database
                 _dbContext.SaveChanges();
             }

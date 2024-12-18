@@ -32,7 +32,7 @@ public class BorrowService
             throw new InvalidOperationException("This book is already borrowed by another user.");
 
         var borrowLimitDate = DateTime.Now.AddDays(14);
-        if (await _dbContext.Borrows.CountAsync(b => b.UserId == userId && b.ReturnDate <= borrowLimitDate) >= 2)
+        if (await _dbContext.Borrows.CountAsync(b => b.UserId == userId && b.ReturnDate <= borrowLimitDate) > 3)
         {
             throw new InvalidOperationException("Users can only borrow up to 2 books at a time.");
         }
@@ -40,7 +40,6 @@ public class BorrowService
         var borrow = new Borrow
         {
             UserId = userId,
-            BookISBN = ISBN,
             BorrowDate = DateTime.Now,
             ReturnDate = DateTime.Now.AddDays(14)
         };

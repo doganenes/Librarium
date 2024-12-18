@@ -3,8 +3,12 @@
     public class reviewDTO
     {
 
-        string? description { set; get; }
+        public string? description { set; get; }
 
-        float ? rate { set; get; } 
+        public int rate { set; get; }
+
+        public string? UserId { set; get; }
+
+        public string? ISBN { set; get; }
     }
 }

@@ -41,6 +41,8 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<BorrowService>();
+builder.Services.AddScoped<ReviewService>();
+
 
 
 builder.Services.AddEndpointsApiExplorer();

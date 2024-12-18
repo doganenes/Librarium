@@ -1,5 +1,6 @@
 ﻿using Backend.Data.Context;
 using Backend.Data.Entities;
+using Backend.Dtos;
 using Backend.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,21 +8,17 @@ namespace Backend.Services
 {
     public class ReviewService
     {
-        private readonly IRepository<Review> _reviewRepository;
         private readonly LibraryContext _dbContext;
 
-        public ReviewService(IRepository<User> userRepository, IRepository<Review> reviewRepository, LibraryContext dbContext)
+        public ReviewService(LibraryContext dbContext)
         {
-            _reviewRepository = reviewRepository;
             _dbContext = dbContext;
         }
 
-
-        public async Task MakeaReview(string userId, string ISBN, float rate, string description)
+        public async Task MakeReview(reviewDTO r)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-
-            var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == ISBN);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == r.UserId);
+            var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == r.ISBN);
 
             if (user == null)
                 throw new KeyNotFoundException("User not found.");
@@ -31,16 +28,15 @@ namespace Backend.Services
 
             var review = new Review
             {
-                ISBN = ISBN,
-                ReviewRate = rate,
-                Description = description,
+                ISBN = r.ISBN,
+                ReviewRate = r.rate,
+                Description = r.description,
                 CreatedDate = DateTime.Now
             };
 
-            book?.Reviews?.Add(review);
-            _reviewRepository.Insert(review);
+            user.Reviews.Add(review);
+            book.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
         }
-
     }
 }
