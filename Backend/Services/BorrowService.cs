@@ -42,7 +42,6 @@ public class BorrowService
         var borrow = new Borrow
         {
             UserId = userId,
-            BookISBN = ISBN,
             BorrowDate = DateTime.Now,
             ReturnDate = DateTime.Now.AddDays(14)
         };
@@ -92,4 +91,17 @@ public class BorrowService
         return overdueBooks;
     }
 
+    public async Task<List<Borrow>> GetBorrowsByUserIdAsync(string userId)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        if (user == null)
+            throw new KeyNotFoundException("User not found.");
+
+        var borrows = await _dbContext.Borrows
+            .Include(b => b.Book)
+            .Where(b => b.UserId == userId)
+            .ToListAsync();
+
+        return borrows;
+    }
 }
