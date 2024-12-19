@@ -13,6 +13,7 @@ const iconList: Record<
   LightMode: lazy(() => import("@mui/icons-material/LightMode")),
   BrowseBooks: lazy(() => import("@mui/icons-material/MenuBook")),
   HomeRounded: lazy(() => import("@mui/icons-material/HomeRounded")),
+  Profile: lazy(() => import("@mui/icons-material/AccountCircle")),
 };
 
 type DynamicIconProps = {

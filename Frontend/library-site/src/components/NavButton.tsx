@@ -10,6 +10,12 @@ const navConfig = [
     to: "/browsebooks",
   },
   {
+    id: "profile",
+    label: "Profile",
+    icon: "Profile",
+    to: "/profile",
+  },
+  {
     id: "login",
     label: "Log In",
     icon: "Login",

@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getBookByISBN } from "../api/bookApi";
+import {
+  getBookByISBN,
+  makeReview,
+  addFavoriteBook,
+  removeFavoriteBook,
+  getFavoriteBookList,
+} from "../api/bookApi";
 import {
   Typography,
   CircularProgress,
@@ -11,6 +17,10 @@ import {
   Rating,
   TextField,
   Button,
+  Divider,
+  Snackbar,
+  Alert,
+  IconButton,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {
@@ -22,6 +32,9 @@ import {
   LibraryBooks as BookshelfIcon,
   Star as RatingIcon,
   RateReview as ReviewIcon,
+  Favorite,
+  FavoriteBorder,
+  LibraryBooks,
 } from "@mui/icons-material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -33,22 +46,40 @@ const Book: React.FC = () => {
   const [book, setBook] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const { user } = React.useContext(UserContext);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [message, setMessage] = useState<{
+    text: string;
+    type: "success" | "error";
+  } | null>(null);
 
   useEffect(() => {
-    if (isbn) {
-      getBookByISBN(isbn)
-        .then((response) => {
-          setBook(response);
+    const loadBookData = async () => {
+      if (isbn) {
+        try {
+          const bookData = await getBookByISBN(isbn);
+          setBook(bookData);
+
+          // Check favorite status if user is logged in
+          if (user) {
+            const favoriteBooks = await getFavoriteBookList(user.id);
+            const isBookFavorited = favoriteBooks.some(
+              (book: any) => book.bookISBN === isbn
+            );
+            setIsFavorite(isBookFavorited);
+          }
+
           setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error getting book by ISBN:", error);
+        } catch (error) {
+          console.error("Error loading book data:", error);
           setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [isbn]);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    loadBookData();
+  }, [isbn, user]);
 
   const validationSchema = Yup.object({
     newReview: Yup.string()
@@ -66,12 +97,40 @@ const Book: React.FC = () => {
       newReviewRating: 0,
     },
     validationSchema,
-    onSubmit: (values, { resetForm }) => {
-      console.log("Submitting review:", values);
-      // TODO: submit values to API
-      resetForm();
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await makeReview(
+          user!.id,
+          isbn!,
+          values.newReviewRating,
+          values.newReview
+        );
+        setMessage({ text: "Review submitted successfully", type: "success" });
+        resetForm();
+        // Refresh book data to show new review
+        const updatedBook = await getBookByISBN(isbn!);
+        setBook(updatedBook);
+      } catch (error) {
+        setMessage({ text: "Error submitting review", type: "error" });
+      }
     },
   });
+
+  const handleFavoriteToggle = async () => {
+    if (!user) return;
+    try {
+      if (isFavorite) {
+        await removeFavoriteBook(user.id, isbn!);
+        setMessage({ text: "Removed from favorites", type: "success" });
+      } else {
+        await addFavoriteBook(user.id, isbn!);
+        setMessage({ text: "Added to favorites", type: "success" });
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      setMessage({ text: "Error updating favorites", type: "error" });
+    }
+  };
 
   if (loading) {
     return (
@@ -105,10 +164,11 @@ const Book: React.FC = () => {
         <Grid
           container
           size={{ xs: 12, md: 4 }}
-          justifyContent={"center"}
-          px={10}
+          justifyContent="center"
+          alignItems="center"
+          px={8}
         >
-          <Card>
+          <Card className="h-fit w-full">
             <CardMedia
               component="img"
               image={book.imageURL}
@@ -118,10 +178,18 @@ const Book: React.FC = () => {
         </Grid>
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
-            <CardContent className="grid grid-cols-2 gap-4">
-              <Typography variant="h4" align="center" className="col-span-2">
-                {book.bookTitle}
-              </Typography>
+            <CardContent className="grid grid-cols-2 gap-4 !p-10 !pb-2">
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                className="col-span-2"
+              >
+                <Typography variant="h4" align="center">
+                  {book.bookTitle}
+                </Typography>
+              </Box>
+              <Divider className="col-span-2" />
               <Box display="flex" alignItems="center" gap={1}>
                 <AuthorIcon />
                 <Typography variant="body1">
@@ -175,7 +243,29 @@ const Book: React.FC = () => {
                 </Typography>
               </Box>
             </CardContent>
+            <CardContent className="flex justify-center">
+              {user && (
+                <div className="flex gap-4">
+                  <Button
+                    variant="contained"
+                    disabled={!book.availability}
+                    endIcon={<LibraryBooks />}
+                  >
+                    Borrow
+                  </Button>
+                  <Button
+                    variant="contained"
+                    onClick={handleFavoriteToggle}
+                    color={isFavorite ? "error" : "primary"}
+                    endIcon={isFavorite ? <Favorite /> : <FavoriteBorder />}
+                  >
+                    {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                  </Button>
+                </div>
+              )}
+            </CardContent>
           </Card>
+
           {user && (
             <Grid size={{ xs: 12 }}>
               <Box sx={{ mt: 4 }}>
@@ -269,6 +359,15 @@ const Book: React.FC = () => {
           </CardContent>
         </Card>
       )}
+      <Snackbar
+        open={message !== null}
+        autoHideDuration={6000}
+        onClose={() => setMessage(null)}
+      >
+        <Alert severity={message?.type} onClose={() => setMessage(null)}>
+          {message?.text}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
