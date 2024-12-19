@@ -31,10 +31,7 @@ public class BorrowService
         if (book.Availability == false)
             throw new InvalidOperationException("This book is already borrowed by another user.");
 
-        if (await _dbContext.Borrows.CountAsync(b =>
-{
-            return b.UserId == userId && b.ReturnDate >= DateTime.Now;
-        }) >= 2)
+        if (await _dbContext.Borrows.CountAsync(b => b.UserId == userId && b.ReturnDate >= DateTime.Now) >= 2)
         {
             throw new InvalidOperationException("Users can only borrow up to 2 books at a time.");
         }
