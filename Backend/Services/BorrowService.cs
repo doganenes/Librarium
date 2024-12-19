@@ -40,6 +40,7 @@ public class BorrowService
         var borrow = new Borrow
         {
             UserId = userId,
+            BookISBN = ISBN,
             BorrowDate = DateTime.Now,
             ReturnDate = DateTime.Now.AddDays(14)
         };
