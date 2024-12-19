@@ -57,5 +57,31 @@ namespace Backend.Controllers
             var overdueBooks = await _borrowService.CheckOverdueBooksAsync();
             return Ok(overdueBooks);
         }
+
+        [HttpGet("getBorrowsByUserId")]
+        public async Task<IActionResult> GetBorrowsByUserId(string userId)
+        {
+            try
+            {
+                var borrows = await _borrowService.GetBorrowsByUserIdAsync(userId);
+                if (!borrows.Any())
+                    return Ok(new { Message = "This user has not borrowed any books." });
+
+                var result = borrows.Select(b => new
+                {
+                    b.Book.BookTitle,
+                    b.Book.BookAuthor,
+                    b.Book.ISBN,
+                    b.BorrowDate,
+                    b.ReturnDate
+                });
+
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+        }
     }
 }
