@@ -136,3 +136,14 @@ export const overdueBooks = async (userId:string) => {
         throw error;
     });
 }
+
+export const getBorrowsByUserId = async (userId:string) => {
+    return axiosInstance.get("/Borrow/getBorrowsByUserId",{
+        params:{
+            UserId: userId
+        }
+    }).then(response => response.data.$values) // Extract the array of borrowed books
+    .catch((error) => {
+        throw error;
+    });
+}
