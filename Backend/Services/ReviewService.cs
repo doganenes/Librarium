@@ -37,7 +37,7 @@ namespace Backend.Services
                 CreatedDate = DateTime.Now
             };
 
-            book.AvgRating = (reviewCount + r.rate) / reviewCount++;
+            book.AvgRating = (reviewCount * r.rate) / reviewCount++;
             _dbContext.Books.Update(book);
 
             user.Reviews.Add(review);
