@@ -31,8 +31,7 @@ public class BorrowService
         if (book.Availability == false)
             throw new InvalidOperationException("This book is already borrowed by another user.");
 
-        var borrowLimitDate = DateTime.Now.AddDays(14);
-        if (await _dbContext.Borrows.CountAsync(b => b.UserId == userId && b.ReturnDate <= borrowLimitDate) > 3)
+        if (await _dbContext.Borrows.CountAsync(b => b.UserId == userId && b.ReturnDate >= DateTime.Now) >= 2)
         {
             throw new InvalidOperationException("Users can only borrow up to 2 books at a time.");
         }
@@ -40,7 +39,7 @@ public class BorrowService
         var borrow = new Borrow
         {
             UserId = userId,
-            BookISBN=ISBN,
+            BookISBN = ISBN,
             BorrowDate = DateTime.Now,
             ReturnDate = DateTime.Now.AddDays(14)
         };
@@ -56,7 +55,8 @@ public class BorrowService
     public async Task ReturnBookAsync(string userId, string ISBN)
     {
         var borrow = await _dbContext.Borrows
-            .FirstOrDefaultAsync(b => b.UserId == userId && b.BookISBN == ISBN);
+            .OrderBy(b => b.BorrowDate)
+            .LastOrDefaultAsync(b => b.UserId == userId && b.BookISBN == ISBN);
 
         if (borrow == null)
             throw new InvalidOperationException("The book is not currently borrowed by the user.");
@@ -64,6 +64,11 @@ public class BorrowService
         var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == ISBN);
         if (book == null)
             throw new KeyNotFoundException("Book not found.");
+
+        if (DateTime.Now >= borrow.ReturnDate) // return date expired
+        {
+            throw new InvalidOperationException("Either the book has been returned already, or the return time expired.");
+        }
 
         book.Availability = true;
 
@@ -84,4 +89,16 @@ public class BorrowService
         return overdueBooks;
     }
 
+    public async Task<List<Borrow>> GetBorrowsByUserIdAsync(string userId)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        if (user == null)
+            throw new KeyNotFoundException("User not found.");
+
+        var borrows = await _dbContext.Borrows
+            .Include(b => b.Book)
+            .Where(b => b.UserId == userId)
+            .ToListAsync();
+        return borrows;
+    }
 }

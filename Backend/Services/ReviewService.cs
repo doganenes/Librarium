@@ -20,7 +20,7 @@ namespace Backend.Services
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == r.UserId);
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == r.ISBN);
-            int reviewCount = book.Reviews.Count();
+            int reviewCount = book.Reviews.Count;
             double total = ((double)(reviewCount * book.AvgRating));
 
             if (user == null)
@@ -44,5 +44,16 @@ namespace Backend.Services
             book.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<List<Review>> GetBookReviews(string ISBN)
+        {
+          
+            var reviews = await _dbContext.Reviews
+                .Where(i => i.ISBN == ISBN)
+                .ToListAsync();
+
+            return reviews;
+        }
+
     }
 }

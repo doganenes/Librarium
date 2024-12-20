@@ -39,5 +39,28 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpGet("getBookReview")]
+        public async Task<IActionResult> getBookReview([FromQuery] string ISBN)
+        {
+            if(ISBN == null)
+            {
+                return BadRequest(new { Error = "Review data cannot be null" });
+            }
+            try
+            {
+               var reviews = await _reviewService.GetBookReviews(ISBN);
+                return Ok(reviews);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
+
     }
+    
 }
