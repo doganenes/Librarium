@@ -245,6 +245,11 @@ const Book: React.FC = () => {
               component="img"
               image={book.imageURL}
               alt={book.bookTitle}
+              onLoad={(e) => {
+                if (e.currentTarget.naturalWidth < 10) {
+                  e.currentTarget.src = "book-placeholder.png";
+                }
+              }}
             />
           </Card>
         </Grid>
