@@ -5,7 +5,6 @@ namespace Backend.Data.Entities
 {
     public class Borrow
     {
-        // PK
         [Key]
         public int BorrowId { get; set; }
 
@@ -13,11 +12,9 @@ namespace Backend.Data.Entities
         public User User { get; set; }
         public Book Book { get; set; }
 
-        // FK
         public string UserId { get; set; }
         public string? BookISBN { get; set; }
 
-        // Datetime field
         public DateTime BorrowDate { get; set; }
         public DateTime ReturnDate { get; set; }
     }

@@ -52,12 +52,13 @@ const Header: React.FC = () => {
           </div>
 
           {/* Right Section (Desktop View) */}
-          <div className="items-center space-x-4 hidden md:flex">
+          <div className="items-center space-x-4 hidden lg:flex">
             {user ? (
               <>
                 <Typography variant="h6" className="text-white">
                   Hello, {user.firstName} {user.lastName}
                 </Typography>
+                <NavButton id="profile" color="inherit" variant="outlined" />
                 <NavButton
                   id="logout"
                   color="inherit"
@@ -80,7 +81,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* Mobile Menu Icon */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <IconButton onClick={toggleDrawer(true)} color="inherit">
               <MenuIcon />
             </IconButton>
@@ -96,6 +97,7 @@ const Header: React.FC = () => {
               <Typography variant="h6">
                 Hello, {user.firstName} {user.lastName}
               </Typography>
+              <NavButton id="profile" color="inherit" variant="text" />
               <NavButton
                 id="logout"
                 color="inherit"

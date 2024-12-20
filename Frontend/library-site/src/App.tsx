@@ -11,6 +11,7 @@ import BrowseBooks from "./pages/BrowseBooks";
 import Book from "./pages/Book";
 import { UserProvider } from "./context/UserContext";
 import Logout from "./pages/Logout";
+import Profile from "./pages/Profile";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
               <Route path="/browsebooks" element={pageWrapper(BrowseBooks)} />
               <Route path="/book" element={pageWrapper(Book)} />
               <Route path="/logout" element={pageWrapper(Logout)} />
+              <Route path="/profile" element={pageWrapper(Profile)} />
             </Routes>
           </AnimatePresence>
         </ThemeProvider>

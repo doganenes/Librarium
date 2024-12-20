@@ -56,3 +56,83 @@ export const getUserFromToken = async () => {
         throw error;
     });
 }
+
+export const makeReview = async (userId:string, isbn: string, rating: number, review: string) => {
+    return axiosInstance.post("/Review/makeReview",{},{
+        params:{
+            UserId: userId,
+            ISBN: isbn,
+            rate: rating,
+            description: review
+        }
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export const addFavoriteBook = async (userId:string, isbn: string) => {
+    return axiosInstance.post("/User/addFavoriteBook",{},{
+        params:{
+            UserId: userId,
+            ISBN: isbn
+        }
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export const removeFavoriteBook = async (userId:string, isbn: string) => {
+    return axiosInstance.delete("/User/removeFavoriteBook",{
+        params:{
+            userId,
+            ISBN: isbn
+        }
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export const getFavoriteBookList = async (userId:string) => {
+    return axiosInstance.get("/User/getFavoriteBookList",{
+        params:{
+            userId
+        }
+    }).then(response => response.data.$values) // Extract the array of favorite books
+    .catch((error) => {
+        throw error;
+    });
+}
+
+
+export const borrowBook = async (userId:string, isbn: string) => {
+    return axiosInstance.post("/Borrow/borrowBook",{},{
+        params:{
+            UserId: userId,
+            ISBN: isbn
+        }
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export const returnBook = async (userId:string, isbn: string) => {
+    return axiosInstance.post("/Borrow/returnBook",{},{
+        params:{
+            UserId: userId,
+            ISBN: isbn
+        }
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export const overdueBooks = async (userId:string) => {
+    return axiosInstance.get("/Borrow/overdueBooks",{
+        params:{
+            UserId: userId
+        }
+    }).then(response => response.data.$values) // Extract the array of overdue books
+    .catch((error) => {
+        throw error;
+    });
+}

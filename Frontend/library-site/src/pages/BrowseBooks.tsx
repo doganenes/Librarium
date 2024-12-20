@@ -181,7 +181,7 @@ export default function BrowseBooks() {
           <img
             src={selectedBook?.imageURL}
             alt="Book Cover"
-            className="min-h-50% transform transition-transform  "
+            className="h-[80%] transform transition-transform "
           />
         </Fade>
       </Modal>
