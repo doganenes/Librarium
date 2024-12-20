@@ -37,7 +37,14 @@ namespace Backend.Services
                 CreatedDate = DateTime.Now
             };
 
-            book.AvgRating = (reviewCount * r.rate) / reviewCount++;
+            if (reviewCount > 0)
+            {
+                book.AvgRating = (reviewCount * r.rate + book.AvgRating) / (reviewCount + 1);
+            }
+            else
+            {
+                book.AvgRating = r.rate;
+            }
             _dbContext.Books.Update(book);
 
             user.Reviews.Add(review);
@@ -53,6 +60,40 @@ namespace Backend.Services
                 .ToListAsync();
 
             return reviews;
+        }
+
+        public async Task DeleteReview(int reviewId)
+        {
+            var review = await _dbContext.Reviews
+                .FirstOrDefaultAsync(r => r.ReviewId == reviewId);
+
+            if (review == null)
+                throw new KeyNotFoundException("Review not found.");
+
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.UserId == review.UserId);
+
+            var book = await _dbContext.Books
+                .FirstOrDefaultAsync(b => b.ISBN == review.ISBN);
+
+            if (user == null || book == null)
+                throw new KeyNotFoundException("User or book not found.");
+            
+            user.Reviews.Remove(review);
+            book.Reviews.Remove(review);
+
+            int reviewCount = book.Reviews.Count;
+            decimal totalRating = book.Reviews.Sum(r => r.ReviewRate);
+            Review bookRating = book.Reviews.FirstOrDefault(x => x.ReviewId == reviewId);
+
+            if (reviewCount > 0)
+            {
+                book.AvgRating = totalRating / reviewCount;
+            }
+
+            _dbContext.Reviews.Remove(review);
+
+            await _dbContext.SaveChangesAsync();
         }
 
     }

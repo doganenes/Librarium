@@ -61,6 +61,23 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpDelete("deleteReview")]
+        public async Task<IActionResult> DeleteReview(int reviewId)
+        {
+            try
+            {
+                await _reviewService.DeleteReview(reviewId);
+
+                return Ok(new { Message = "Review deleted successfully." });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                  return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
-    
 }
