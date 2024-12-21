@@ -17,7 +17,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("makeReview")]
-        public async Task<IActionResult> MakeReview([FromQuery] reviewDTO review)
+        public async Task<IActionResult> MakeReview([FromQuery] ReviewDto review)
         {
             if (review == null)
             {
@@ -42,13 +42,13 @@ namespace Backend.Controllers
         [HttpGet("getBookReview")]
         public async Task<IActionResult> getBookReview([FromQuery] string ISBN)
         {
-            if(ISBN == null)
+            if (ISBN == null)
             {
                 return BadRequest(new { Error = "Review data cannot be null" });
             }
             try
             {
-               var reviews = await _reviewService.GetBookReviews(ISBN);
+                var reviews = await _reviewService.GetBookReviews(ISBN);
                 return Ok(reviews);
             }
             catch (KeyNotFoundException ex)
@@ -69,10 +69,10 @@ namespace Backend.Controllers
                 await _reviewService.DeleteReview(reviewId);
 
                 return Ok(new { Message = "Review deleted successfully." });
-            }
+            }   
             catch (KeyNotFoundException ex)
             {
-                  return NotFound(ex.Message);
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {

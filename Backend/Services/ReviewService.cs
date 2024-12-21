@@ -16,7 +16,7 @@ namespace Backend.Services
             _dbContext = dbContext;
         }
 
-        public async Task MakeReview(reviewDTO r)
+        public async Task MakeReview(ReviewDto r)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == r.UserId);
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == r.ISBN);
@@ -51,23 +51,49 @@ namespace Backend.Services
             book.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task<List<reviewDTO>> GetBookReviews(string ISBN)
+
+        public async Task<List<Review>> GetBookReviews(string ISBN)
         {
+
             var reviews = await _dbContext.Reviews
                 .Where(i => i.ISBN == ISBN)
-                .Select(r => new reviewDTO
-                {
-                    description = r.Description,
-                    rate = r.ReviewRate,
-                    UserDto = new UserDto
-                    {
-                        FirstName = r.User.FirstName,
-                        LastName = r.User.LastName
-                    }
-                })
                 .ToListAsync();
 
             return reviews;
+        }
+
+        public async Task DeleteReview(int reviewId)
+        {
+            var review = await _dbContext.Reviews
+                .FirstOrDefaultAsync(r => r.ReviewId == reviewId);
+
+            if (review == null)
+                throw new KeyNotFoundException("Review not found.");
+
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.UserId == review.UserId);
+
+            var book = await _dbContext.Books
+                .FirstOrDefaultAsync(b => b.ISBN == review.ISBN);
+
+            if (user == null || book == null)
+                throw new KeyNotFoundException("User or book not found.");
+
+            user.Reviews.Remove(review);
+            book.Reviews.Remove(review);
+
+            int reviewCount = book.Reviews.Count;
+            decimal totalRating = book.Reviews.Sum(r => r.ReviewRate);
+            Review bookRating = book.Reviews.FirstOrDefault(x => x.ReviewId == reviewId);
+
+            if (reviewCount > 0)
+            {
+                book.AvgRating = totalRating / reviewCount;
+            }
+
+            _dbContext.Reviews.Remove(review);
+
+            await _dbContext.SaveChangesAsync();
         }
 
     }
