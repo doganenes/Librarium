@@ -69,6 +69,11 @@ export default function BrowseBooks() {
               setSelectedBook(params.row);
               setModalOpen(true);
             }}
+            onLoad={(e) => {
+              if (e.currentTarget.naturalWidth < 10) {
+                e.currentTarget.src = "book-placeholder.png";
+              }
+            }}
           />
         ),
         display: "flex",
@@ -182,6 +187,11 @@ export default function BrowseBooks() {
             src={selectedBook?.imageURL}
             alt="Book Cover"
             className="h-[80%] transform transition-transform "
+            onLoad={(e) => {
+              if (e.currentTarget.naturalWidth < 10) {
+                e.currentTarget.src = "book-placeholder.png";
+              }
+            }}
           />
         </Fade>
       </Modal>

@@ -6,6 +6,9 @@ import {
   addFavoriteBook,
   removeFavoriteBook,
   getFavoriteBookList,
+  borrowBook,
+  getBorrowsByUserId,
+  returnBook,
 } from "../api/bookApi";
 import {
   Typography,
@@ -20,7 +23,11 @@ import {
   Divider,
   Snackbar,
   Alert,
-  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {
@@ -51,6 +58,9 @@ const Book: React.FC = () => {
     text: string;
     type: "success" | "error";
   } | null>(null);
+  const [openBorrowDialog, setOpenBorrowDialog] = useState(false);
+  const [isBorrowed, setIsBorrowed] = useState(false);
+  const [openReturnDialog, setOpenReturnDialog] = useState(false);
 
   useEffect(() => {
     const loadBookData = async () => {
@@ -79,6 +89,20 @@ const Book: React.FC = () => {
     };
 
     loadBookData();
+  }, [isbn, user]);
+
+  useEffect(() => {
+    const checkIfBorrowed = async () => {
+      if (user) {
+        const borrows = await getBorrowsByUserId(user.id);
+        const borrowedBook = borrows.find(
+          (borrow: any) =>
+            borrow.isbn === isbn && new Date(borrow.returnDate) > new Date()
+        );
+        setIsBorrowed(!!borrowedBook);
+      }
+    };
+    checkIfBorrowed();
   }, [isbn, user]);
 
   const validationSchema = Yup.object({
@@ -132,6 +156,54 @@ const Book: React.FC = () => {
     }
   };
 
+  const handleBorrowClick = () => {
+    setOpenBorrowDialog(true);
+  };
+
+  const handleBorrowConfirm = async () => {
+    setOpenBorrowDialog(false);
+    if (!user) return;
+    try {
+      await borrowBook(user.id, isbn!);
+      setMessage({ text: "Book borrowed successfully", type: "success" });
+      setIsBorrowed(true);
+      const updatedBook = await getBookByISBN(isbn!);
+      setBook(updatedBook);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.error || "Error borrowing the book";
+      setMessage({ text: errorMessage, type: "error" });
+    }
+  };
+
+  const handleBorrowCancel = () => {
+    setOpenBorrowDialog(false);
+  };
+
+  const handleReturnClick = () => {
+    setOpenReturnDialog(true);
+  };
+
+  const handleReturnConfirm = async () => {
+    setOpenReturnDialog(false);
+    if (!user) return;
+    try {
+      await returnBook(user.id, isbn!);
+      setMessage({ text: "Book returned successfully", type: "success" });
+      setIsBorrowed(false);
+      const updatedBook = await getBookByISBN(isbn!);
+      setBook(updatedBook);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.error || "Error returning the book";
+      setMessage({ text: errorMessage, type: "error" });
+    }
+  };
+
+  const handleReturnCancel = () => {
+    setOpenReturnDialog(false);
+  };
+
   if (loading) {
     return (
       <Box
@@ -173,6 +245,11 @@ const Book: React.FC = () => {
               component="img"
               image={book.imageURL}
               alt={book.bookTitle}
+              onLoad={(e) => {
+                if (e.currentTarget.naturalWidth < 10) {
+                  e.currentTarget.src = "book-placeholder.png";
+                }
+              }}
             />
           </Card>
         </Grid>
@@ -246,13 +323,25 @@ const Book: React.FC = () => {
             <CardContent className="flex justify-center">
               {user && (
                 <div className="flex gap-4">
-                  <Button
-                    variant="contained"
-                    disabled={!book.availability}
-                    endIcon={<LibraryBooks />}
-                  >
-                    Borrow
-                  </Button>
+                  {isBorrowed ? (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      endIcon={<LibraryBooks />}
+                      onClick={handleReturnClick}
+                    >
+                      Return Book
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      disabled={!book.availability}
+                      endIcon={<LibraryBooks />}
+                      onClick={handleBorrowClick}
+                    >
+                      Borrow
+                    </Button>
+                  )}
                   <Button
                     variant="contained"
                     onClick={handleFavoriteToggle}
@@ -304,7 +393,7 @@ const Book: React.FC = () => {
                       <Rating
                         name="newReviewRating"
                         value={formik.values.newReviewRating}
-                        onChange={(e, value) =>
+                        onChange={(_e, value) =>
                           formik.setFieldValue("newReviewRating", value)
                         }
                         onBlur={formik.handleBlur}
@@ -368,6 +457,36 @@ const Book: React.FC = () => {
           {message?.text}
         </Alert>
       </Snackbar>
+      {/* Borrow Confirmation Dialog */}
+      <Dialog open={openBorrowDialog} onClose={handleBorrowCancel}>
+        <DialogTitle>Borrow Book</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to borrow "{book.bookTitle}"?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleBorrowCancel}>Cancel</Button>
+          <Button onClick={handleBorrowConfirm} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* Return Confirmation Dialog */}
+      <Dialog open={openReturnDialog} onClose={handleReturnCancel}>
+        <DialogTitle>Return Book</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to return "{book.bookTitle}"?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleReturnCancel}>Cancel</Button>
+          <Button onClick={handleReturnConfirm} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
