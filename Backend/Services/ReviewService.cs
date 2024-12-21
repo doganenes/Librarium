@@ -44,16 +44,27 @@ namespace Backend.Services
             book.Reviews.Add(review);
             await _dbContext.SaveChangesAsync();
         }
-
-        public async Task<List<Review>> GetBookReviews(string ISBN)
+        public async Task<List<reviewDTO>> GetBookReviews(string ISBN)
         {
-          
             var reviews = await _dbContext.Reviews
                 .Where(i => i.ISBN == ISBN)
+                .Select(r => new reviewDTO
+                {
+                    description = r.Description,
+                    rate = r.ReviewRate,
+                    UserDto = new UserDto
+                    {
+                        FirstName = r.User.FirstName,
+                        LastName = r.User.LastName
+                    }
+                })
                 .ToListAsync();
 
             return reviews;
         }
 
+
     }
+
 }
+
