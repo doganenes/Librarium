@@ -8,7 +8,7 @@ namespace Backend.Data.Entities
         public int ReviewId { get; set; }
 
         public string? Description { get; set; }
-        public decimal ReviewRate { get; set; }
+        public int ReviewRate { get; set; }
         public DateTime? CreatedDate { get; set; }
 
         // Foreign keys
