@@ -20,8 +20,7 @@ namespace Backend.Services
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == r.UserId);
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == r.ISBN);
-            int reviewCount = _dbContext.Reviews.Select(rev => rev.ISBN == r.ISBN).Count();
-            double total = ((double)(reviewCount * book.AvgRating));
+            int reviewCount = _dbContext.Reviews.Count(rev => rev.ISBN == r.ISBN);
 
             if (user == null)
                 throw new KeyNotFoundException("User not found.");
