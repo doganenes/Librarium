@@ -39,12 +39,13 @@ namespace Backend.Services
 
             if (reviewCount > 0)
             {
-                book.AvgRating = (reviewCount * r.rate + book.AvgRating) / (reviewCount + 1);
+                book.AvgRating = ((reviewCount * book.AvgRating) + r.rate) / (reviewCount + 1);
             }
             else
             {
                 book.AvgRating = r.rate;
             }
+
             _dbContext.Books.Update(book);
 
             user.Reviews.Add(review);
