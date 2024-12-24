@@ -3,6 +3,8 @@ using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
+[Route("api/[controller]")]
+[ApiController]
 public class AdminController : ControllerBase
 {
     private readonly AdminService _adminService;
