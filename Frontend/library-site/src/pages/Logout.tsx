@@ -10,6 +10,7 @@ const Logout = () => {
   useEffect(() => {
     setUser(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     navigate("/");
   }, [setUser, navigate]);
 

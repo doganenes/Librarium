@@ -1,17 +1,20 @@
 import React from "react";
 import Header from "./layout/Header";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
+import { AnimatePresence, motion } from "framer-motion";
+import ThemeProvider from "./context/ThemeContext";
+
 import Homepage from "./pages/Homepage";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
-import { AnimatePresence, motion } from "framer-motion";
-import ThemeProvider from "./context/ThemeContext";
 import BrowseBooks from "./pages/BrowseBooks";
 import Book from "./pages/Book";
-import { UserProvider } from "./context/UserContext";
 import Logout from "./pages/Logout";
 import Profile from "./pages/Profile";
+import Error404 from "./pages/Error404";
+import Admin from "./pages/Admin";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -33,6 +36,8 @@ const App: React.FC = () => {
               <Route path="/book" element={pageWrapper(Book)} />
               <Route path="/logout" element={pageWrapper(Logout)} />
               <Route path="/profile" element={pageWrapper(Profile)} />
+              <Route path="/admin" element={pageWrapper(Admin)} />
+              <Route path="*" element={pageWrapper(Error404)} />
             </Routes>
           </AnimatePresence>
         </ThemeProvider>

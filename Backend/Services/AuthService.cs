@@ -102,6 +102,11 @@ namespace Backend.Services
             return user;
         }
 
+        public User getUserFromId(string id, IConfiguration configuration)
+        {
+            var user = _userRepository.GetById(id);
+            return user;
+        }
 
     }
 }

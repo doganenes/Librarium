@@ -23,7 +23,6 @@ public class BookService
     {
         IQueryable<Book> query = _bookRepository.GetAll()
     .Include(book => book.FavoritedBy)
-        .ThenInclude(user => user.BorrowBooks)
     .Include(book => book.Reviews);
 
 

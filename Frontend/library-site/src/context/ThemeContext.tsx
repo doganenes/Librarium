@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
@@ -35,6 +35,13 @@ interface ThemeProviderProps {
 
 const ThemeProvider: React.FC<ThemeProviderProps> = (props) => {
   const darkModeState = React.useState(false);
+
+  useEffect(() => {
+    const darkMode = localStorage.getItem("darkMode");
+    if (darkMode === "true") {
+      darkModeState[1](true);
+    }
+  }, []);
 
   return (
     <darkModeContext.Provider value={darkModeState}>

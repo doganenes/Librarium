@@ -4,6 +4,7 @@ import {
   getFavoriteBookList,
   getBorrowsByUserId,
   returnBook,
+  Book,
 } from "../api/bookApi";
 import {
   Card,
@@ -25,18 +26,13 @@ import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { Email, Person } from "@mui/icons-material";
 
-interface Book {
-  bookISBN: string;
-  title: string;
-  author: string;
-}
-
 interface BorrowedBook {
   bookTitle: string;
   bookAuthor: string;
   isbn: string;
   borrowDate: string;
   returnDate: string;
+  overdue?: string;
 }
 
 const Profile = () => {
@@ -77,13 +73,26 @@ const Profile = () => {
       try {
         const borrows = await getBorrowsByUserId(user.id);
         const now = new Date();
-        const filteredBorrows = borrows.filter(
-          (borrow: BorrowedBook) => new Date(borrow.returnDate) > now
-        );
-        const sortedBorrows = filteredBorrows.sort(
-          (a: BorrowedBook, b: BorrowedBook) =>
-            new Date(a.returnDate).getTime() - new Date(b.returnDate).getTime()
-        );
+        const filteredBorrows = borrows.filter((borrow: BorrowedBook) => {
+          const borrowDate = new Date(borrow.borrowDate);
+          const returnDate = new Date(borrow.returnDate);
+          const diffInDays =
+            (returnDate.getTime() - borrowDate.getTime()) /
+            (1000 * 60 * 60 * 24);
+          return diffInDays >= 14 || returnDate > now;
+        });
+        const sortedBorrows = filteredBorrows
+          .sort(
+            (a: BorrowedBook, b: BorrowedBook) =>
+              new Date(a.returnDate).getTime() -
+              new Date(b.returnDate).getTime()
+          )
+          .map((borrow: BorrowedBook) => {
+            const returnDate = new Date(borrow.borrowDate);
+            returnDate.setDate(returnDate.getDate() + 14);
+            const now = new Date();
+            return { ...borrow, overdue: returnDate < now ? "Yes" : "No" };
+          });
         setBorrowedBooks(sortedBorrows);
       } catch (error) {
         console.error("Error fetching borrowed books:", error);
@@ -226,6 +235,11 @@ const Profile = () => {
                       width: 200,
                     },
                     {
+                      field: "overdue",
+                      headerName: "Overdue",
+                      width: 150,
+                    },
+                    {
                       field: "actions",
                       headerName: "Actions",
                       width: 300,
@@ -248,6 +262,7 @@ const Profile = () => {
                             color="secondary"
                             onClick={() => handleReturnClick(params.row)}
                             style={{ marginLeft: 8 }}
+                            disabled={params.row.overdue === "Yes"}
                           >
                             Return Book
                           </Button>

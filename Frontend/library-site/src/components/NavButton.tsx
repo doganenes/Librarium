@@ -33,6 +33,12 @@ const navConfig = [
     icon: "Logout",
     to: "/logout",
   },
+  {
+    id: "admin",
+    label: "Admin Panel",
+    icon: "AdminPanel",
+    to: "/admin",
+  },
 ];
 
 type NavButtonProps = {
@@ -51,7 +57,7 @@ const NavButton = ({
 }: NavButtonProps) => {
   const item = navConfig.find((item) => item.id === id);
   if (!item) {
-    return null; // or handle the error as needed
+    return null;
   }
   const { label, icon, to } = item;
   return (
@@ -61,6 +67,7 @@ const NavButton = ({
       className={className}
       component={NavLink}
       to={to}
+      replace={true}
       endIcon={<DynamicIcon icon={icon} />}
       {...props}
     >

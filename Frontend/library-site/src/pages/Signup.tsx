@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TextField,
   Button,
@@ -9,7 +9,8 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { register } from "../api/bookApi"; // Replace with your actual API call
+import { register } from "../api/bookApi";
+import { UserContext } from "../context/UserContext";
 
 const Signup: React.FC = () => {
   const [error, setError] = useState<string | null>(null);

@@ -20,8 +20,7 @@ namespace Backend.Services
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == r.UserId);
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == r.ISBN);
-            int reviewCount = _dbContext.Reviews.Select(rev => rev.ISBN == r.ISBN).Count();
-            double total = ((double)(reviewCount * book.AvgRating));
+            int reviewCount = _dbContext.Reviews.Count(rev => rev.ISBN == r.ISBN);
 
             if (user == null)
                 throw new KeyNotFoundException("User not found.");
@@ -83,13 +82,18 @@ namespace Backend.Services
             user.Reviews.Remove(review);
             book.Reviews.Remove(review);
 
-            int reviewCount = book.Reviews.Count;
-            decimal totalRating = book.Reviews.Sum(r => r.ReviewRate);
-            Review bookRating = book.Reviews.FirstOrDefault(x => x.ReviewId == reviewId);
+            int reviewCount = _dbContext.Reviews.Count(rev => rev.ISBN == review.ISBN);
+            decimal totalRating = _dbContext.Reviews
+                .Where(rev => rev.ISBN == review.ISBN)
+                .Sum(rev => rev.ReviewRate);
 
-            if (reviewCount > 0)
+            if (reviewCount > 1)
             {
-                book.AvgRating = totalRating / reviewCount;
+                book.AvgRating = (totalRating - review.ReviewRate) / (reviewCount - 1);
+            }
+            else
+            {
+                book.AvgRating = 0;
             }
 
             _dbContext.Reviews.Remove(review);

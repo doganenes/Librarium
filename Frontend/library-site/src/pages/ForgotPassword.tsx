@@ -9,7 +9,6 @@ import {
 import { NavLink } from "react-router-dom";
 
 const ForgotPassword: React.FC = () => {
-  //TODO: Form validation and submission
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
