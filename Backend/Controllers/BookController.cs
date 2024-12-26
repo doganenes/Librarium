@@ -24,7 +24,7 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetAllBooks()
         {
             var books = await _bookService.GetAllAsync();
-            if (books == null)
+            if (!books.Any())
             {
                 return NotFound("No books found.");
             }

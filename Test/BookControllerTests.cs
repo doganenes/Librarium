@@ -49,39 +49,23 @@ namespace Backend.Tests.Controllers
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
             okResult.Value.Should().BeEquivalentTo(books);
         }
+
+
+
+        [Fact]
+        public async Task GetAllBooks_ShouldReturnNotFound_WhenNoBooksExist()
+        {
+            // Arrange
+            var emptyQueryableBooks = new List<Book>().AsQueryable();
+            _mockBookRepository.Setup(repo => repo.GetAll()).Returns(emptyQueryableBooks);
+
+            // Act
+            var result = await _controller.GetAllBooks();
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>()
+                .Which.Value.Should().Be("No books found."); // Mesajı da kontrol et
+        }
+
     }
-
-
-    //[Fact]
-    //public async Task GetAllBooks_ShouldReturnNotFound_WhenNoBooksExist()
-    //{
-    //    // Arrange
-    //    var emptyQueryableBooks = new List<Book>().AsQueryable(); // Empty list as IQueryable
-    //    _mockBookService.Setup(service => service.GetAllAsync()).ReturnsAsync(emptyQueryableBooks);
-
-    //    // Act
-    //    var result = await _controller.GetAllBooks();
-
-    //    // Assert
-    //    var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
-    //    notFoundResult.Value.Should().Be("No books found.");
-    //}
-
-    //[Fact]
-    //public async Task FilterBook_ShouldReturnNotFound_WhenNoMatchingBooksExist()
-    //{
-    //    // Arrange
-    //    var filter = new BookDto { Title = "Nonexistent" };
-    //    var emptyBookList = new List<Book>(); // Empty list for search result
-
-    //    // Mock SearchBooksAsync to return an empty list
-    //    _mockBookService.Setup(service => service.SearchBooksAsync(filter)).ReturnsAsync(emptyBookList);
-
-    //    // Act
-    //    var result = await _controller.FilterBook(filter);
-
-    //    // Assert
-    //    var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
-    //    notFoundResult.Value.Should().Be("No books found matching the search criteria.");
-    //}
 }
