@@ -40,12 +40,42 @@ export const getAllBooks = async () => {
 }
 
 export const getBookByISBN = async (isbn: string) => {
-    return axiosInstance.post("/Book/bookSearch",{},{
+    return axiosInstance.get("/Book/bookSearch",{
         params:{
             BookISBN: isbn
         }
     }).then((res) => {
         return res.data.$values[0];
+    }).catch((error) => {
+        throw error;
+    });
+}
+
+export type Review = {
+    reviewId: number,
+    description: string,
+    reviewRate: number,
+    createdDate: string,
+    isbn: string,
+    userId: string
+  }
+
+export const getReviewsByISBN = async (isbn: string): Promise<Review[]> => {
+    return axiosInstance.get("/Review/getBookReview",{
+        params:{
+            ISBN: isbn
+        }
+    }).then(response => response.data.$values)
+    .catch((error) => {
+        throw error;
+    });
+}
+
+export const deleteReview = async (reviewId: string) => {
+    return axiosInstance.delete("/Review/deleteReview",{
+        params:{
+            reviewId
+        }
     }).catch((error) => {
         throw error;
     });
