@@ -39,6 +39,8 @@ public class AdminService
         };
 
         await _context.Books.AddAsync(newBook);
+
+        await _context.SaveChangesAsync();
     }
 
 }

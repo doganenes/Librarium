@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   TextField,
   Button,
@@ -10,15 +10,20 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { getUserFromToken, login } from "../api/bookApi";
-import axiosInstance from "../utils/axios";
 import { UserContext } from "../context/UserContext";
 
 const Login: React.FC = () => {
   const [error, setError] = React.useState<string | null>(null);
   const { user, setUser } = React.useContext(UserContext);
   const location = useLocation();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const state = location.state as { message: string } | undefined;
+
+  useEffect(() => {
+    if (user) {
+      navigate("/browsebooks");
+    }
+  }, [user, navigate]);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -50,17 +55,16 @@ const Login: React.FC = () => {
           getUserFromToken().then((response) => {
             const user = response.data;
             console.log("User data stored.");
-            console.log(user);
             setUser({
               id: user.userId,
               firstName: user.firstName,
               lastName: user.lastName,
               email: user.email,
+              role: user.role,
             });
-
-            // Redirect to /browsebooks
           });
-          navigation("/browsebooks", {
+          // Redirect to /browsebooks
+          navigate("/browsebooks", {
             state: { message: "Login successful" },
           });
         })

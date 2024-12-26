@@ -16,7 +16,6 @@ const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { user } = React.useContext(UserContext);
 
-  // Toggle Drawer
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
@@ -38,7 +37,10 @@ const Header: React.FC = () => {
               variant="outlined"
               color="inherit"
               className="border-white text-white hover:bg-white hover:text-blue-500"
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={() => {
+                setDarkMode(!darkMode);
+                localStorage.setItem("darkMode", JSON.stringify(!darkMode));
+              }}
               endIcon={
                 darkMode ? (
                   <DynamicIcon icon="DarkMode" />
@@ -52,13 +54,21 @@ const Header: React.FC = () => {
           </div>
 
           {/* Right Section (Desktop View) */}
-          <div className="items-center space-x-4 hidden lg:flex">
+          <div className="items-center space-x-4 hidden xl:flex">
             {user ? (
               <>
                 <Typography variant="h6" className="text-white">
                   Hello, {user.firstName} {user.lastName}
                 </Typography>
                 <NavButton id="profile" color="inherit" variant="outlined" />
+                {user && user.role === "admin" && (
+                  <NavButton
+                    id="admin"
+                    color="inherit"
+                    variant="outlined"
+                    className="border-white text-white hover:bg-white hover:text-blue-500"
+                  />
+                )}
                 <NavButton
                   id="logout"
                   color="inherit"
@@ -81,7 +91,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* Mobile Menu Icon */}
-          <div className="lg:hidden flex items-center">
+          <div className="xl:hidden flex items-center">
             <IconButton onClick={toggleDrawer(true)} color="inherit">
               <MenuIcon />
             </IconButton>
@@ -98,6 +108,14 @@ const Header: React.FC = () => {
                 Hello, {user.firstName} {user.lastName}
               </Typography>
               <NavButton id="profile" color="inherit" variant="text" />
+              {user && user.role === "admin" && (
+                <NavButton
+                  id="admin"
+                  color="inherit"
+                  variant="outlined"
+                  className="border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
+                />
+              )}
               <NavButton
                 id="logout"
                 color="inherit"

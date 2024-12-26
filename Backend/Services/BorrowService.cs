@@ -20,6 +20,13 @@ public class BorrowService
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.UserId == userId);
 
+
+        var overdueBooks = _dbContext.Borrows
+            .Where(b => b.UserId == userId)
+            .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, DateTime.Now) > 14)
+            .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, b.ReturnDate) >= 14) // not returned
+            .Count();
+
         var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.ISBN == ISBN);
 
         if (user == null)
@@ -31,10 +38,13 @@ public class BorrowService
         if (book.Availability == false)
             throw new InvalidOperationException("This book is already borrowed by another user.");
 
+        if (overdueBooks >= 2)
+            throw new InvalidOperationException("This user has been blacklisted.");
         if (await _dbContext.Borrows.CountAsync(b => b.UserId == userId && b.ReturnDate >= DateTime.Now) >= 2)
         {
             throw new InvalidOperationException("Users can only borrow up to 2 books at a time.");
         }
+
 
         var borrow = new Borrow
         {
@@ -79,12 +89,14 @@ public class BorrowService
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<List<Book>> CheckOverdueBooksAsync()
+    public async Task<List<Borrow>> CheckOverdueBooksAsync()
     {
-        var overdueBooks = await _dbContext.Borrows
+        var overdueBooks = _dbContext.Borrows
             .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, DateTime.Now) > 14)
-            .Select(b => b.Book)
-            .ToListAsync();
+            .Where(b => EF.Functions.DateDiffDay(b.BorrowDate, b.ReturnDate) >= 14) // not returned
+            .Include(b => b.Book)
+            .Include(b => b.User)
+            .ToList();
 
         return overdueBooks;
     }

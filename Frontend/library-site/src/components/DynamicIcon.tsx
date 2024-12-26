@@ -14,6 +14,7 @@ const iconList: Record<
   BrowseBooks: lazy(() => import("@mui/icons-material/MenuBook")),
   HomeRounded: lazy(() => import("@mui/icons-material/HomeRounded")),
   Profile: lazy(() => import("@mui/icons-material/AccountCircle")),
+  AdminPanel: lazy(() => import("@mui/icons-material/AdminPanelSettings")),
 };
 
 type DynamicIconProps = {

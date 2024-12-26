@@ -14,7 +14,6 @@ namespace Backend.Data.Entities
         public string? Password { get; set; }
         public string? PhoneNumber { get; set; }
         public string? Role { get; set; }
-        public ICollection<Borrow> BorrowBooks { get; set; } = new Collection<Borrow>();
         public ICollection<Book>? FavouriteBooks { get; set; } = new Collection<Book>();
         public ICollection<Review>? Reviews { get; set; } = new Collection<Review>();
     }

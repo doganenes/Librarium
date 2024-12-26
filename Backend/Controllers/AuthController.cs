@@ -66,6 +66,19 @@ namespace Backend.Controllers
 
         }
 
+        [HttpGet("getUserFromId")]
+        public IActionResult getUserFromId(string id)
+        {
+
+            var user = _authService.getUserFromId(id, _configuration);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            user.Password = null;
+            return Ok(user);
+        }
+
         [HttpGet("getUserFromToken")]
         public IActionResult getUserFromToken([FromHeader(Name = "Authorization")] string jwt)
         {
