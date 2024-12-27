@@ -88,6 +88,24 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpGet("getByUserId")]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            var user = await _userService.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound(new { Message = "User not found." });
+            }
+            return Ok(new
+            {
+                user.UserId,
+                user.FirstName,
+                user.LastName,
+                user.Email
+            });
+        }
+
+
     }
 
 }

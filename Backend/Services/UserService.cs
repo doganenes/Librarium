@@ -12,15 +12,16 @@ namespace Backend.Services
 {
     public class UserService
     {
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Book> _bookRepository;
         private readonly LibraryContext _dbContext;
 
-        public UserService(IRepository<User> userRepository, IRepository<Book> bookRepository, LibraryContext dbContext)
+        public UserService(LibraryContext dbContext)
         {
-            _userRepository = userRepository;
-            _bookRepository = bookRepository;
             _dbContext = dbContext;
+        }
+
+        public UserService()
+        {
+                
         }
 
         public  void AddFavoriteBook(string userId, string ISBN)
@@ -107,9 +108,10 @@ namespace Backend.Services
             return favoriteBooks;
         }
 
-
-
-
+        public virtual async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+        }
 
     }
 }
