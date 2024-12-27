@@ -26,7 +26,7 @@ namespace Test
             _userContext = new Mock<DbSet<User>>();
             _userService = new UserService(_libraryContext);
             _controller = new UserController(_userService);
-            _output = output; // Injected test output helper
+            _output = output; 
         }
 
         [Fact]

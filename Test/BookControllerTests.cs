@@ -1,18 +1,10 @@
-﻿using Backend.Services;
-using Backend.Dtos;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-using FluentAssertions;
-using Backend.Controllers;
+﻿using Backend.Controllers;
 using Backend.Data.Entities;
 using Backend.Repositories.Abstract;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Xunit.Abstractions;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace Backend.Tests.Controllers
@@ -29,7 +21,7 @@ namespace Backend.Tests.Controllers
             _mockBookRepository = new Mock<IRepository<Book>>();
             _bookService = new BookService(_mockBookRepository.Object);
             _controller = new BookController(_bookService);
-            _output = output; // Injected test output helper
+            _output = output; 
         }
 
         [Fact]
@@ -48,10 +40,10 @@ namespace Backend.Tests.Controllers
             }
 
             var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-            _output.WriteLine("Sonuç OkObjectResult olarak doğrulandı.");
+            _output.WriteLine("Result confirmed as OkObjectResult");
 
             okResult.Value.Should().BeEquivalentTo(books);
-            _output.WriteLine("Sonuç içerisindeki değerler beklenen değerlere eşit.");
+            _output.WriteLine("The values ​​in the result are equal to the expected values.");
         }
 
     
