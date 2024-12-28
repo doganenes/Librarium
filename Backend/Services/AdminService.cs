@@ -3,12 +3,12 @@ using Backend.Data.Entities;
 using Backend.Dtos;
 using Backend.Repositories.Abstract;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 public class AdminService
 {
     private readonly IRepository<Book> _bookRepository;
     private readonly LibraryContext _context;
+    private readonly BorrowService _borrowService;
 
     public AdminService(IRepository<Book> bookRepository, LibraryContext context)
     {
@@ -39,6 +39,18 @@ public class AdminService
         };
 
         await _context.Books.AddAsync(newBook);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task BlackListUser()
+    {
+        List<Borrow> overDueBooks = await _borrowService.CheckOverdueBooksAsync();
+        var blackListedUser = overDueBooks
+            .Where(u => u.User.Role == "user")
+            .Select(u => u.User);
+        blackListedUser.ToList().ForEach(u => u.Role = "");
+
 
         await _context.SaveChangesAsync();
     }

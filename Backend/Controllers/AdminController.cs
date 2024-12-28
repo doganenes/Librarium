@@ -32,4 +32,19 @@ public class AdminController : ControllerBase
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+
+    [HttpPut("blacklistUser")]
+
+    public async Task<IActionResult> BlackListUser()
+    {
+        try
+        {
+            await _adminService.BlackListUser();
+            return Ok("User blacklisted successfully.");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 }
