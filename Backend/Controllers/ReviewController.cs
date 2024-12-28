@@ -2,6 +2,7 @@
 using Backend.Dtos;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -62,10 +63,16 @@ namespace Backend.Controllers
         }
 
         [HttpDelete("deleteReview")]
-        public async Task<IActionResult> DeleteReview(int reviewId,string authenticatedUser)
+        public async Task<IActionResult> DeleteReview(int reviewId)
         {
             try
             {
+                var authenticatedUser = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).ToString();
+
+                if (authenticatedUser == null)
+                {
+                    throw new UnauthorizedAccessException("User ID not found in the token.");
+                }
                 await _reviewService.DeleteReview(reviewId,authenticatedUser);
 
                 return Ok(new { Message = "Review deleted successfully." });
