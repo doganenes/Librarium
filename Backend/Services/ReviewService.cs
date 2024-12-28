@@ -76,8 +76,17 @@ namespace Backend.Services
             var book = await _dbContext.Books
                 .FirstOrDefaultAsync(b => b.ISBN == review.ISBN);
 
+
+            var valid = user.Reviews.Contains(review) && book.Reviews.Contains(review);
+
+            if (!valid)
+            {
+                throw new Exception("Review does not belong to user or book.");
+            }
+
             if (user == null || book == null)
                 throw new KeyNotFoundException("User or book not found.");
+
 
             user.Reviews.Remove(review);
             book.Reviews.Remove(review);
