@@ -44,7 +44,7 @@ namespace Test
             var mockUserService = new Mock<UserService>();
             mockUserService.Setup(s => s.GetUserByIdAsync(userId)).ReturnsAsync(user);
 
-            var userController = new UserController(mockUserService.Object); // Inject mocked service
+            var userController = new UserController(mockUserService.Object);
 
             var result = await userController.GetUserById(userId);
 

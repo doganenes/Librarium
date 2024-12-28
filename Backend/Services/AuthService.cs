@@ -47,7 +47,7 @@ namespace Backend.Services
             return _userRepository.GetByEmail(u => u.Email == email) != null;
         }
 
-        public Token Login(LoginDto loginDto)
+        public virtual Token Login(LoginDto loginDto)
         {
             var user = _userRepository.GetByEmail(u => u.Email == loginDto.Email);
 
@@ -107,6 +107,7 @@ namespace Backend.Services
             var user = _userRepository.GetById(id);
             return user;
         }
+
 
     }
 }

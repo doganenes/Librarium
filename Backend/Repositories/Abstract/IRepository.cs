@@ -14,6 +14,6 @@ namespace Backend.Repositories.Abstract
         public IQueryable<T> GetAll();
         public T GetByCondition(Expression<Func<T, bool>> condition);
         public List<T> GetAllByCondition(Expression<Func<T, bool>> condition);
-
+     
     }
 }
