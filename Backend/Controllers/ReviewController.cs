@@ -62,11 +62,11 @@ namespace Backend.Controllers
         }
 
         [HttpDelete("deleteReview")]
-        public async Task<IActionResult> DeleteReview(int reviewId)
+        public async Task<IActionResult> DeleteReview(int reviewId,string authenticatedUser)
         {
             try
             {
-                await _reviewService.DeleteReview(reviewId);
+                await _reviewService.DeleteReview(reviewId,authenticatedUser);
 
                 return Ok(new { Message = "Review deleted successfully." });
             }   

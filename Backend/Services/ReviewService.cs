@@ -62,35 +62,27 @@ namespace Backend.Services
             return reviews;
         }
 
-        public async Task DeleteReview(int reviewId)
+        public async Task DeleteReview(int reviewId, string authenticatedUserId)
         {
+            // Fetch the review to delete
             var review = await _dbContext.Reviews
                 .FirstOrDefaultAsync(r => r.ReviewId == reviewId);
 
             if (review == null)
                 throw new KeyNotFoundException("Review not found.");
 
-            var user = await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.UserId == review.UserId);
+           
+            if (review.UserId != authenticatedUserId)
+                throw new UnauthorizedAccessException("You are not authorized to delete this review.");
 
+           
             var book = await _dbContext.Books
                 .FirstOrDefaultAsync(b => b.ISBN == review.ISBN);
 
+            if (book == null)
+                throw new KeyNotFoundException("Book not found.");
 
-            var valid = user.Reviews.Contains(review) && book.Reviews.Contains(review);
-
-            if (!valid)
-            {
-                throw new Exception("Review does not belong to user or book.");
-            }
-
-            if (user == null || book == null)
-                throw new KeyNotFoundException("User or book not found.");
-
-
-            user.Reviews.Remove(review);
-            book.Reviews.Remove(review);
-
+           
             int reviewCount = _dbContext.Reviews.Count(rev => rev.ISBN == review.ISBN);
             decimal totalRating = _dbContext.Reviews
                 .Where(rev => rev.ISBN == review.ISBN)
@@ -105,10 +97,12 @@ namespace Backend.Services
                 book.AvgRating = 0;
             }
 
+          
             _dbContext.Reviews.Remove(review);
 
             await _dbContext.SaveChangesAsync();
         }
+
 
     }
 }
