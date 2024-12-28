@@ -49,7 +49,7 @@ namespace Test
 
             var result = await _adminController.AddNewBookAsync(newBookDto);
 
-            result.Should().BeOfType<OkObjectResult>();
+            result.Should().BeOfType<OkObjectResult>(); // Hata buradan geliyor olabilir.
             var okResult = result as OkObjectResult;
             okResult.Value.Should().Be("Book added successfully.");
 
@@ -58,5 +58,6 @@ namespace Test
             bookInDb.BookTitle.Should().Be(newBookDto.BookTitle);
             _output.WriteLine($"The book ({newBookDto.ISBN} - {newBookDto.BookTitle}) added successfully.");
         }
+
     }
 }

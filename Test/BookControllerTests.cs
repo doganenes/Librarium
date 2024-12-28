@@ -7,7 +7,7 @@ using Moq;
 using Xunit.Abstractions;
 
 
-namespace Backend.Tests.Controllers
+namespace Test
 {
     public class BookControllerTests
     {
