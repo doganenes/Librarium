@@ -67,13 +67,8 @@ namespace Backend.Controllers
         {
             try
             {
-                var authenticatedUser = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).ToString();
-
-                if (authenticatedUser == null)
-                {
-                    throw new UnauthorizedAccessException("User ID not found in the token.");
-                }
-                await _reviewService.DeleteReview(reviewId,authenticatedUser);
+                
+                await _reviewService.DeleteReview(reviewId);
 
                 return Ok(new { Message = "Review deleted successfully." });
             }   

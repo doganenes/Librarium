@@ -51,7 +51,6 @@ public class AdminService
             .Select(u => u.User);
         blackListedUser.ToList().ForEach(u => u.Role = "");
 
-
         await _context.SaveChangesAsync();
     }
 
