@@ -15,7 +15,7 @@ public class BorrowService
         _dbContext = dbContext;
     }
 
-    public async Task BorrowBookAsync(string userId, string ISBN)
+    public virtual async Task BorrowBookAsync(string userId, string ISBN)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(u => u.UserId == userId);
@@ -62,7 +62,7 @@ public class BorrowService
     }
 
 
-    public async Task ReturnBookAsync(string userId, string ISBN)
+    public virtual async Task ReturnBookAsync(string userId, string ISBN)
     {
         var borrow = await _dbContext.Borrows
             .OrderBy(b => b.BorrowDate)
