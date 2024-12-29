@@ -62,7 +62,7 @@ namespace Backend.Services
             return reviews;
         }
 
-        public async Task DeleteReview(int reviewId, string authenticatedUserId)
+        public async Task DeleteReview(int reviewId)
         {
             // Fetch the review to delete
             var review = await _dbContext.Reviews
@@ -72,8 +72,7 @@ namespace Backend.Services
                 throw new KeyNotFoundException("Review not found.");
 
            
-            if (review.UserId != authenticatedUserId)
-                throw new UnauthorizedAccessException("You are not authorized to delete this review.");
+           
 
            
             var book = await _dbContext.Books
