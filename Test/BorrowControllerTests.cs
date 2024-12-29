@@ -10,13 +10,13 @@ using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Backend.Tests.Controllers
+namespace Test
 {
     public class BorrowControllerTest
     {
         private readonly Mock<IRepository<User>> _mockUserRepository;
         private readonly Mock<IRepository<Book>> _mockBookRepository;
-        private readonly LibraryContext _dbContext;  // Using LibraryContext directly
+        private readonly LibraryContext _dbContext;  
         private readonly Mock<BorrowService> _mockBorrowService;
         private readonly BorrowController _controller;
         private readonly ITestOutputHelper _output;
