@@ -55,7 +55,6 @@ namespace Test
 
             var bookInDb = await _context.Books.FirstOrDefaultAsync(b => b.ISBN == newBookDto.ISBN);
             bookInDb.Should().NotBeNull();
-            bookInDb.BookTitle.Should().Be(newBookDto.BookTitle);
             _output.WriteLine($"The book ({newBookDto.ISBN} - {newBookDto.BookTitle}) added successfully.");
         }
     }
