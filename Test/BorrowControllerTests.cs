@@ -24,12 +24,11 @@ namespace Backend.Tests.Controllers
 
         public BorrowControllerTest(ITestOutputHelper output)
         {
-            // Set up InMemoryDatabase for testing
             var options = new DbContextOptionsBuilder<LibraryContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
                 .Options;
 
-            _dbContext = new LibraryContext(options); // No need for Mocking here
+            _dbContext = new LibraryContext(options);
 
             _mockUserRepository = new Mock<IRepository<User>>();
             _mockBookRepository = new Mock<IRepository<Book>>();
