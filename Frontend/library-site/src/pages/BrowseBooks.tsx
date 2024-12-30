@@ -3,7 +3,8 @@ import {
   DataGrid,
   GridRowsProp,
   GridColDef,
-  GridToolbar,
+  GridToolbarContainer,
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import {
   Modal,
@@ -12,9 +13,20 @@ import {
   Button,
   Backdrop,
   Fade,
+  Box,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { getAllBooks } from "../api/bookApi";
+
+const CustomToolbar = () => {
+  return (
+    <GridToolbarContainer>
+      <Box sx={{ flexGrow: 1 }} />
+      <GridToolbarQuickFilter />
+      <Box sx={{ flexGrow: 1 }} />
+    </GridToolbarContainer>
+  );
+};
 
 /*
 const filteredRowsEmptyState = [{ emptyState: true, isbn: "0" }];
@@ -223,7 +235,7 @@ export default function BrowseBooks() {
               sorting: { sortModel: [{ field: "avgRating", sort: "desc" }] },
             }}
             slots={{
-              toolbar: GridToolbar,
+              toolbar: CustomToolbar,
             }}
             slotProps={{
               toolbar: {

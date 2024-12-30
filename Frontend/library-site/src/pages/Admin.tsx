@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { OverdueBook, overdueBooks, addBook } from "../api/bookApi";
 import { DataGrid } from "@mui/x-data-grid";
@@ -61,7 +61,9 @@ const Admin = () => {
       bookAuthor: Yup.string().required("Author is required"),
       yearOfPublication: Yup.number()
         .typeError("Year must be a number")
-        .required("Year is required"),
+        .required("Year is required")
+        .min(1000, "Invalid year")
+        .max(new Date().getFullYear(), "Invalid year"),
       publisher: Yup.string().required("Publisher is required"),
       imageURL: Yup.string()
         .url("Invalid URL")

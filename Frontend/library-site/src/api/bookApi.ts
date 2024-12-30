@@ -132,7 +132,7 @@ export const getFavoriteBookList = async (userId:string) => {
         params:{
             userId
         }
-    }).then(response => response.data) // Extract the array of favorite books
+    }).then(response => response.data) 
     .catch((error) => {
         throw error;
     });
