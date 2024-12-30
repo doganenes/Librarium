@@ -48,12 +48,7 @@ namespace Test
 
             var result = await userController.GetUserById(userId);
 
-            _output.WriteLine($"Result Type: {result.GetType()}");
-            if (result is OkObjectResult okResult)
-            {
-                _output.WriteLine($"OkObjectResult Value: {okResult.Value}");
-            }
-
+            
             result.Should().BeOfType<OkObjectResult>();
             var okObjectResult = result as OkObjectResult;
 
@@ -64,6 +59,9 @@ namespace Test
                 user.LastName,
                 user.Email
             });
+
+            _output.WriteLine($"User found: (ID: {user.UserId} , Name Surname: {user.FirstName} {user.LastName})");
+
         }
     }
 
