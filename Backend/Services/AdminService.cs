@@ -10,10 +10,11 @@ public class AdminService
     private readonly LibraryContext _context;
     private readonly BorrowService _borrowService;
 
-    public AdminService(IRepository<Book> bookRepository, LibraryContext context)
+    public AdminService(IRepository<Book> bookRepository, LibraryContext context, BorrowService borrowService)
     {
         _bookRepository = bookRepository;
         _context = context;
+        _borrowService = borrowService;
     }
 
     public async Task AddNewBookAsync(AddBookDto bookDto)

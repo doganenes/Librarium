@@ -17,6 +17,7 @@ namespace Test
     public class AdminControllerTests
     {
         private readonly AdminService _adminService;
+        private readonly BorrowService _borrowService;
         private readonly AdminController _adminController;
         private readonly LibraryContext _context;
         private readonly ITestOutputHelper _output;
@@ -28,7 +29,7 @@ namespace Test
                 .Options;
 
             _context = new LibraryContext(options);
-            _adminService = new AdminService(Mock.Of<IRepository<Book>>(), _context);
+            _adminService = new AdminService(Mock.Of<IRepository<Book>>(), _context, _borrowService);
             _adminController = new AdminController(_adminService);
             _output = output;
         }
